@@ -1,12 +1,15 @@
 import java.awt.*;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.Random;
 import java.util.Vector;
 
 public class Array {
-  public static void main(String[] args) {}
+  public static void main(String[] args) {
+    create();
+  }
 
-  public void create() {
+  public static void create() {
     char[] s;
     Date[] dataArray; // 定义数组的时候只是对数组进行了说明，系统没有为其分配内存他们只是引用变量，用来指向一个数组。
 
@@ -51,9 +54,14 @@ public class Array {
     boolean flag = myVector.contains("middle");
     int position = myVector.indexOf("middle", 1); // 从指定位置开始向后搜索，返回与第一个指定对象元素相同的下标位置。
     int position2 = myVector.lastIndexOf("middle", 5); // 向前搜索。
-    int size = myVector.size();//所含元素的个数
+    int size = myVector.size(); // 所含元素的个数
     int capacity = myVector.capacity();
-
+    Enumeration<String> elements = myVector.elements();
+    while (elements.hasMoreElements()) {
+      System.out.println(elements.nextElement());
+    }
+    myVector.trimToSize(); // 将vector的容量下调至最小值
+    myVector.clone();
   }
 }
 
@@ -69,5 +77,25 @@ class Point {
     //    this.x = 0;
     //    this.y = 0;
     this(0, 0); // this直接调用函数使用了类的构造函数，叫做链式调用
+  }
+}
+
+class MyVector extends Vector {
+  public MyVector() {
+    super(1, 1);
+  }
+
+  public void printVector() {
+    Object o;
+    int length = size();
+    System.out.println("Number of vector elements is " + length + " and they are:");
+    for (int i = 0; i < length; i++) {
+      o = elementAt(i);
+      if (o instanceof char[]) {
+        System.out.println(String.copyValueOf((char[]) o));
+      } else {
+        System.out.println(o.toString());
+      }
+    }
   }
 }
