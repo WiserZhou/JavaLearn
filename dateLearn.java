@@ -3,6 +3,20 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class dateLearn {
+
+  private String day;
+  private String time;
+  private int ID;
+  public void hello(){
+    System.out.println("hello1");
+  }
+  public dateLearn(String day, String time, int ID) {
+    this.ID = ID;
+    this.day = day;
+    this.time = time;
+  }
+  public dateLearn(){}
+
   public static void main(String[] args) throws ParseException {
     // 无参构造函数，表示当前日期和时间
     Date currentDate = new Date();
