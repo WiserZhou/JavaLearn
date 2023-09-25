@@ -15,5 +15,21 @@ public class ConstructionAndInitializationOfObjects {
     this(1, name, null);
   }
 
-  public static void main(String[] args) {}
+  public static void main(String[] args) {
+    Data data = new Data();
+    String str = data.s2;
+  }
+}
+
+final class Data {
+  int s1;
+  final String s2 = "Hello!";
+
+  Data() {}
+
+  final void getS1() {}
+
+  final Integer getS2() {
+    return 1;
+  }
 }
