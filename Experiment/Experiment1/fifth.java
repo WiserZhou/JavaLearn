@@ -1,6 +1,5 @@
-package JavaExperiment;
+package Experiment.Experiment1;
 
-import java.lang.management.OperatingSystemMXBean;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;

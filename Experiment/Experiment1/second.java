@@ -1,6 +1,4 @@
-package JavaExperiment;
-
-import static java.lang.Math.pow;
+package Experiment.Experiment1;
 
 public class second {
   public static void main(String[] args) {
