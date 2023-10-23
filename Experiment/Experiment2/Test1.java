@@ -13,10 +13,10 @@ public class Test1 {
 }
 
 class pay {
-  double price = 5;
-  double withhold_rate;
-  double pay_rate;
-  double payment;
+  private double price = 5;
+  private double withhold_rate;
+  private double pay_rate;
+  private double payment;
 
   void computePayment(double hour, double pay_rate, double withhold_rate) {
     this.payment = hour * price * (1 - withhold_rate) * (1 - pay_rate);

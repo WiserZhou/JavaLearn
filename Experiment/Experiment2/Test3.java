@@ -35,15 +35,15 @@ public class Test3 {
     gradeList.add(new Grade("李四", "Python", 88));
     gradeList.add(new Grade("王五", "Python", 70));
 
-    Map<String, X> NameOfScore = new HashMap<>();
+    Map<String, Pair> NameOfScore = new HashMap<>();
     Map<String, Integer> CourseScore = new HashMap<>();
-    Map<String, X> classScore = new HashMap<>();
+    Map<String, Pair> classScore = new HashMap<>();
     for (Course course : courseList) {
       CourseScore.put(course.getName(), course.getScore());
     }
     for (Student student : studentList) {
       //        assert false;
-      NameOfScore.put(student.getName(), new X(0.0, 0, 0));
+      NameOfScore.put(student.getName(), new Pair(0.0, 0, 0));
     }
 
     for (Student student : studentList) {
@@ -56,16 +56,16 @@ public class Test3 {
               CourseScore.get(grade.getCourseName())
                   + NameOfScore.get(student.getName()).getStudyScore();
 
-          NameOfScore.put(student.getName(), new X(score + grade.getCourseScore(), num, SCORE));
+          NameOfScore.put(student.getName(), new Pair(score + grade.getCourseScore(), num, SCORE));
         }
       }
       if (classScore.get(student.getInClass()) == null) {
         classScore.put(
-            student.getInClass(), new X(NameOfScore.get(student.getName()).getScore(), 1));
+            student.getInClass(), new Pair(NameOfScore.get(student.getName()).getScore(), 1));
       } else {
         classScore.put(
             student.getInClass(),
-            new X(
+            new Pair(
                 (NameOfScore.get(student.getName()).getScore()
                     + classScore.get(student.getInClass()).getScore()),
                 classScore.get(student.getInClass()).getNum() + 1));
@@ -94,14 +94,14 @@ public class Test3 {
     for (NameScore nameScore : nameScoreList) {
       System.out.println(nameScore.getName() + " " + nameScore.getScore());
     }
-    Map<String, X> gradeMap = new HashMap<>();
+    Map<String, Pair> gradeMap = new HashMap<>();
     for (Grade grade : gradeList) {
       if (gradeMap.get(grade.getCourseName()) == null)
-        gradeMap.put(grade.getCourseName(), new X(grade.getCourseScore(), 1));
+        gradeMap.put(grade.getCourseName(), new Pair(grade.getCourseScore(), 1));
       else {
         gradeMap.put(
             grade.getCourseName(),
-            new X(
+            new Pair(
                 grade.getCourseScore() + gradeMap.get(grade.getCourseName()).getScore(),
                 gradeMap.get(grade.getCourseName()).getNum() + 1));
       }
@@ -121,16 +121,8 @@ class NameScore implements Comparable<NameScore> {
     return name;
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
   public double getScore() {
     return score;
-  }
-
-  public void setScore(double score) {
-    this.score = score;
   }
 
   public NameScore(String name, double score) {
@@ -144,13 +136,12 @@ class NameScore implements Comparable<NameScore> {
   }
 }
 
-class X {
+class Pair {
   double score;
   int num;
-
   int studyScore;
 
-  public X(double score, int num, int studyScore) {
+  public Pair(double score, int num, int studyScore) {
     this.score = score;
     this.num = num;
     this.studyScore = studyScore;
@@ -160,11 +151,7 @@ class X {
     return studyScore;
   }
 
-  public void setStudyScore(int studyScore) {
-    this.studyScore = studyScore;
-  }
-
-  public X(double score, int num) {
+  public Pair(double score, int num) {
     this.score = score;
     this.num = num;
   }
@@ -173,16 +160,8 @@ class X {
     return score;
   }
 
-  public void setScore(double score) {
-    this.score = score;
-  }
-
   public int getNum() {
     return num;
-  }
-
-  public void setNum(int num) {
-    this.num = num;
   }
 }
 
@@ -195,24 +174,12 @@ class Grade {
     return studentName;
   }
 
-  public void setStudentName(String studentName) {
-    this.studentName = studentName;
-  }
-
   public String getCourseName() {
     return courseName;
   }
 
-  public void setCourseName(String courseName) {
-    this.courseName = courseName;
-  }
-
   public double getCourseScore() {
     return courseScore;
-  }
-
-  public void setCourseScore(double courseScore) {
-    this.courseScore = courseScore;
   }
 
   public Grade(String studentName, String courseName, double courseScore) {
@@ -223,34 +190,17 @@ class Grade {
 }
 
 class Course {
-  String ID;
-
-  public String getID() {
-    return ID;
-  }
-
-  public void setID(String ID) {
-    this.ID = ID;
-  }
+  private String ID;
+  String name;
+  int score;
 
   public String getName() {
     return name;
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
   public int getScore() {
     return score;
   }
-
-  public void setScore(int score) {
-    this.score = score;
-  }
-
-  String name;
-  int score;
 
   public Course(String ID, String name, int score) {
     this.ID = ID;
@@ -263,40 +213,15 @@ class Student {
   String name;
   String ID;
   boolean sex;
+  String inClass;
 
   public String getName() {
     return name;
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getID() {
-    return ID;
-  }
-
-  public void setID(String ID) {
-    this.ID = ID;
-  }
-
-  public boolean isSex() {
-    return sex;
-  }
-
-  public void setSex(boolean sex) {
-    this.sex = sex;
-  }
-
   public String getInClass() {
     return inClass;
   }
-
-  public void setInClass(String inClass) {
-    this.inClass = inClass;
-  }
-
-  String inClass;
 
   public Student(String name, String ID, boolean sex, String inClass) {
     this.name = name;

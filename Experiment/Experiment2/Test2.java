@@ -1,4 +1,5 @@
 package Experiment.Experiment2;
+
 public class Test2 {
   public static void main(String[] args) {
     Triangle triangle = new Triangle(3, 4, 5);
@@ -35,44 +36,14 @@ class Triangle {
     this.area = Math.sqrt(p * (p - side1) * (p - side2) * (p - side3));
     return area;
   }
-
-  void setSide1(double side1) {
-    this.side1 = side1;
-  }
-
-  void setSide2(double side2) {
-    this.side2 = side2;
-  }
-
-  void setSide3(double side3) {
-    this.side3 = side3;
-  }
-
-  boolean isTriangle() {
-    if (side1 + side2 <= side3) return false;
-    else if (side2 + side3 <= side1) return false;
-    else return !(side3 + side1 <= side2);
-  }
-
-  double getSide1() {
-    return side1;
-  }
-
-  double getSide2() {
-    return side2;
-  }
-
-  double getSide3() {
-    return side3;
-  }
 }
 
 /** Lander类具有类型为double的上底、下底、高、面积属性，具有返回面积的功能。 */
 class Trapezoid {
-  double topEdge;
-  double bottomEdge;
-  double height;
-  double area;
+  private double topEdge;
+  private double bottomEdge;
+  private double height;
+  private double area;
 
   Trapezoid(double topEdge, double bottomEdge, double height) {
     this.topEdge = topEdge;
