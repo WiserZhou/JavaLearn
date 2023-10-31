@@ -102,14 +102,14 @@ class TaskQueue {
 
   public synchronized void addTask(String s) {
     this.queue.add(s);
-    this.notifyAll();
+    this.notifyAll(); // 使用notifyAll()将唤醒所有当前正在this锁等待的线程，而notify()只会唤醒其中一个（具体哪个依赖操作系统，有一定的随机性）
   }
 
   public synchronized String getTask() throws InterruptedException {
     while (queue.isEmpty()) {
       this.wait();
     }
-    return queue.remove();
+    return queue.remove(); // 移除头部元素
   }
 }
 
