@@ -6,16 +6,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+// 在Java中，`final`关键字有以下几种用法和作用：
+//        1. 修饰类：`final`修饰的类是最终类，不能被其他类继承。这样的类通常是为了安全性或者设计考虑而被设计成不可改变的。
+//        2. 修饰方法：`final`修饰的方法是最终方法，不能被子类重写。这样的方法通常是为了确保其逻辑行为不会被改变或者出于性能优化的考虑。
+//        3. 修饰变量：`final`修饰的变量是最终变量，即常量，一旦赋值后就不能再改变。常量通常使用大写字母命名，并且在编译时会被替换为实际的值，提高了代码的可读性和性能。
+//        4. 修饰参数：`final`修饰的方法参数表示该参数是只读的，即在方法内部不能修改这个参数的值。这样的设计可以增加代码的可读性和安全性。
+//        5. 修饰引用类型变量：`final`修饰的引用类型变量表示该变量的引用是不可变的，即不能再指向其他对象，但是对象本身的状态可以改变。
+//`final`关键字的作用主要有以下几个方面：
+//        - 安全性：`final`修饰的类、方法和变量可以帮助保护代码免受意外或恶意的修改，确保代码的稳定性和正确性。
+//        - 性能优化：对于`final`修饰的方法和变量，编译器可以进行一些优化，例如内联方法调用或者直接使用常量值，从而提高程序的执行效率。
+//        - 设计约束：`final`关键字可以限制类的继承、方法的重写和变量的重新赋值，使得类、方法和变量的行为更加确定和可控。
+//        总的来说，`final`关键字在Java中用于表示最终、不可改变的元素，它可以提供安全性、性能优化和设计约束等好处。
 public class BookManagementSystemGUI extends JFrame {
-
-  private ArrayList<Book> bookList = new ArrayList<>(); // 创建一个ArrayList用于存储图书信息
-
-  private JTextField nameField, // 输入书名的文本框
-      authorField, // 输入作者的文本框
-      publisherField, // 输入出版社的文本框
-      issnField, // 输入刊号的文本框
-      pubDateField, // 输入出版日期的文本框
-      pageCountField; // 输入页数的文本框
+  private final ArrayList<Book> bookList = new ArrayList<>(); // 创建一个ArrayList用于存储图书信息
+  private JTextField nameField; // 输入书名的文本框
+  private JTextField authorField; // 输入作者的文本框
+  private JTextField publisherField; // 输入出版社的文本框
+  private JTextField pubDateField; // 输入出版日期的文本框
+  private JTextField pageCountField; // 输入页数的文本框
   private JTextArea summaryArea; // 输入摘要的文本域
   private JList<Book> bookListUI; // 显示图书列表的JList组件
 
@@ -57,7 +65,7 @@ public class BookManagementSystemGUI extends JFrame {
     inputPanel.add(publisherField); // 添加文本框到输入面板
 
     inputPanel.add(new JLabel("刊号：")); // 添加标签到输入面板
-    issnField = new JTextField(); // 创建输入刊号的文本框
+    JTextField issnField = new JTextField(); // 创建输入刊号的文本框
     inputPanel.add(issnField); // 添加文本框到输入面板
 
     inputPanel.add(new JLabel("出版日期：")); // 添加标签到输入面板
@@ -80,6 +88,17 @@ public class BookManagementSystemGUI extends JFrame {
     JScrollPane bookListScrollPane = new JScrollPane(bookListUI); // 创建一个带滚动条的面板用于包含图书列表
     mainPanel.add(bookListScrollPane, BorderLayout.CENTER); // 将图书列表面板添加到主面板的中部
 
+    JPanel buttonPanel = getjPanel();
+
+    mainPanel.add(buttonPanel, BorderLayout.SOUTH); // 将按钮面板添加到主面板的南部
+
+    add(mainPanel); // 将主面板添加到窗口
+    pack(); // 根据组件的首选大小调整窗口大小
+    setLocationRelativeTo(null); // 将窗口居中显示
+    setVisible(true); // 设置窗口可见
+  }
+
+  private JPanel getjPanel() {
     JPanel buttonPanel = new JPanel(new FlowLayout()); // 创建一个面板用于包含按钮，使用流式布局
 
     JButton insertButton = new JButton("插入图书"); // 创建一个插入图书的按钮
@@ -108,25 +127,18 @@ public class BookManagementSystemGUI extends JFrame {
           }
         });
     buttonPanel.add(searchButton); // 将查找按钮添加到按钮面板
-
-    mainPanel.add(buttonPanel, BorderLayout.SOUTH); // 将按钮面板添加到主面板的南部
-
-    add(mainPanel); // 将主面板添加到窗口
-    pack(); // 根据组件的首选大小调整窗口大小
-    setLocationRelativeTo(null); // 将窗口居中显示
-    setVisible(true); // 设置窗口可见
+    return buttonPanel;
   }
 
   private void insertBook() {
     String name = nameField.getText(); // 获取输入的书名
     String author = authorField.getText(); // 获取输入的作者
     String publisher = publisherField.getText(); // 获取输入的出版社
-    String issn = issnField.getText(); // 获取输入的刊号
     String pubDate = pubDateField.getText(); // 获取输入的出版日期
     int pageCount = Integer.parseInt(pageCountField.getText()); // 将输入的页数转换为整数
     String summary = summaryArea.getText(); // 获取输入的摘要
 
-    Book book = new Book(name, author, publisher, issn, pubDate, pageCount, summary); // 创建一个图书对象
+    Book book = new Book(name, author, publisher, pubDate, pageCount, summary); // 创建一个图书对象
     if (bookList.add(book)) { // 将图书对象添加到图书列表中
       DefaultListModel<Book> model = (DefaultListModel<Book>) bookListUI.getModel(); // 获取图书列表组件的模型
       model.addElement(book); // 将已插入的图书添加到JList组件中
@@ -169,29 +181,15 @@ public class BookManagementSystemGUI extends JFrame {
 
 class Book {
 
-  private String name;
-  private String author;
-  private String publisher;
-  private String issn;
-  private String pubDate;
-  private int pageCount;
-  private String summary;
+  private final String name;
+  private final String author;
+  private final String publisher;
 
   public Book(
-      String name,
-      String author,
-      String publisher,
-      String issn,
-      String pubDate,
-      int pageCount,
-      String summary) {
+      String name, String author, String publisher, String pubDate, int pageCount, String summary) {
     this.name = name;
     this.author = author;
     this.publisher = publisher;
-    this.issn = issn;
-    this.pubDate = pubDate;
-    this.pageCount = pageCount;
-    this.summary = summary;
   }
 
   public String getName() {
