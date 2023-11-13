@@ -1130,26 +1130,172 @@ public class Main {
 下面哪个是 Java 提供的面向应用层编程的类_____D_____。
 A. InetAddress B.Socket C. URL D. ServerSocket
 
+答案错了，选C
+![img_13.png](img_13.png)
 ![img_4.png](img_4.png)
 
 https://blog.csdn.net/dyx1993/article/details/113985648
 
+![img_5.png](img_5.png)
+![img_6.png](img_6.png)
+![img_7.png](img_7.png)
+![img_8.png](img_8.png)
+![img_9.png](img_9.png)
+![img_10.png](img_10.png)
+![img_11.png](img_11.png)
+![img_12.png](img_12.png)
+
+
+### InetAddress
+使用`InetAddress`类，我们可以获取和操作与网络相关的主机名和IP地址。`InetAddress`类提供了一组静态方法和实例方法来获取主机名和IP地址、进行地址解析和反向解析等操作。
+
+下面是一些常用的示例：
+
+1. 获取本地主机的IP地址和主机名：
+
+```java
+InetAddress localHost = InetAddress.getLocalHost();
+System.out.println("Local Host IP Address: " + localHost.getHostAddress());
+System.out.println("Local Host Name: " + localHost.getHostName());
+```
+
+2. 根据主机名获取IP地址：
+
+```java
+String hostName = "www.example.com";
+InetAddress[] addresses = InetAddress.getAllByName(hostName);
+for (InetAddress address : addresses) {
+    System.out.println("IP Address: " + address.getHostAddress());
+}
+```
+根据主机名获取IP地址返回的是一个数组，是因为一个主机名可能对应多个IP地址。这种情况通常出现在负载均衡、域名解析等情况下。举个例子，当一个域名对应多个服务器时，DNS解析就会返回一个IP地址数组，以提供负载均衡和容错能力。因此，根据主机名获取IP地址返回数组能够更全面地覆盖所有可能的IP地址，确保网络通信的可靠性和稳定性。
+3. 根据IP地址获取主机名：
+
+```java
+String ipAddress = "192.168.0.1";
+InetAddress address = InetAddress.getByName(ipAddress);
+System.out.println("Host Name: " + address.getHostName());
+```
+
+4. 判断是否可达：
+
+```java
+InetAddress address = InetAddress.getByName("www.example.com");
+boolean isReachable = address.isReachable(5000); // 5秒内是否可达
+System.out.println("Is Reachable: " + isReachable);
+```
+
+通过`InetAddress`类，我们可以方便地获取主机名和IP地址，并且可以进行地址解析和网络可达性检查等操作。这使得我们可以在网络编程中更好地处理和使用主机和IP地址相关的信息。
+
+
+![img_14.png](img_14.png)
+
+### URL
+![img_15.png](img_15.png)
+![img_16.png](img_16.png)
+URL与Stream的结合的一个例子，正好可以用来复习
+![img_17.png](img_17.png)
+再加上一个线程，正好复习
+![img_18.png](img_18.png)
 
 
 
+### socket
+![img_19.png](img_19.png)
+![img_20.png](img_20.png)
 
+根据你提供的代码，我帮你整理了服务端和客户端的Socket使用样例。在这个例子中，服务端将等待客户端连接，一旦客户端连接成功，服务端将向客户端发送字符串，并从客户端接收数据；客户端将连接到服务端，发送字符串并从服务端接收数据。
 
+服务端代码如下：
 
+```java
+import java.io.*;
+import java.net.*;
 
+public class SocketServer {
+    ServerSocket ss = null;
+    Socket socket;
+    InputStream in;
+    OutputStream out;
+    DataInputStream din;
+    DataOutputStream dout;
 
+    public SocketServer() {
+        try {
+            ss = new ServerSocket(10000); // 创建服务器端套接字对象
+            System.out.println("等待连接....");
+            socket = ss.accept(); // 用accept方法等待客户端的连接
+            System.out.println("已连接....");
+            in = socket.getInputStream(); // 获取套接字输入流
+            out = socket.getOutputStream(); // 获取套接字输出流
+            din = new DataInputStream(in);
+            dout = new DataOutputStream(out);
+            dout.writeUTF("Hello!"); // 向客户端发送字符串
 
+            // 从客户端读取数据
+            String name = din.readUTF();
+            String department = din.readUTF();
+            System.out.println("name=" + name);
+            System.out.println("department=" + department);
 
+            // 关闭所有资源
+            in.close();
+            out.close();
+            din.close();
+            dout.close();
+            socket.close();
+            ss.close();
+        } catch (IOException e) {
+            System.out.println("读写数据出错!" + e);
+        }
+    }
 
+    public static void main(String[] args) {
+        SocketServer socketServer = new SocketServer();
+    }
+}
+```
 
+客户端代码如下：
 
+```java
+import java.io.*;
+import java.net.*;
 
+public class SocketClient {
+    Socket socket;
+    InputStream in;
+    OutputStream out;
+    DataInputStream din;
+    DataOutputStream dout;
 
+    public SocketClient() {
+        try {
+            socket = new Socket("127.0.0.1", 10000); // 创建Socket对象
+            in = socket.getInputStream();
+            out = socket.getOutputStream();
+            din = new DataInputStream(in);
+            dout = new DataOutputStream(out);
+            din.readUTF();
 
+            // 向服务器发送数据
+            dout.writeUTF("孟凡超");
+            dout.writeUTF("计算机科学与技术学院");
 
+            in.close();
+            out.close();
+            din.close();
+            dout.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public static void main(String[] args) {
+        SocketClient socketClient = new SocketClient();
+    }
+}
+```
+
+以上代码演示了一个简单的服务端和客户端的Socket通信样例，服务端与客户端可以相互传递数据。
 
