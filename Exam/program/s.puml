@@ -1,0 +1,31 @@
+@startuml
+
+abstract class Geometry {
+  +getArea(): double
+}
+
+class Pillar {
+  -bottom: Geometry
+  -height: double
+  +getVolume(): double
+  +Pillar(bottom: Geometry, height: double)
+}
+
+class Rectangle {
+  -height: double
+  -width: double
+  +getArea(): double
+  +Rectangle(height: double, width: double)
+}
+
+class Circle {
+  -radius: double
+  +getArea(): double
+  +Circle(radius: double)
+}
+
+Geometry <|-- Rectangle
+Geometry <|-- Circle
+Pillar "1" *-- "1" Geometry
+
+@enduml
