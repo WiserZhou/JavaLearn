@@ -247,6 +247,12 @@ C. Outer.Inner in = new Outer.Inner();
 
 D. Outer.Inner in = new Outer().new.Inner();
 
+写法可以是：
+Inner in = new Inner();
+或者
+Outer.Inner in = new Outer.new Inner();
+，也可以部分拼接
+
 四种子类：
 https://www.joshua317.com/article/212
 https://www.cnblogs.com/yz123/p/11962473.html
@@ -380,50 +386,648 @@ Object object=new Object();
 
 在这里可以在后面追加{}，就可以临时更改Object内部的成员属性
 
-
 ## 静态内部类
 
 ```java
 public class Outer { // 外部类
-  static String name = "joshua317";
+    static String name = "joshua317";
 
-  public static void main(String[] args) {
-    Outer outer = new Outer();
-    // 方式一：内部直接访问
-    Inner inner1 = new Inner();
-    inner1.innerFun();
-    // 方式二：因为是静态内部类，可以通过类名直接访问(前提是满足访问权限)
-    Outer.Inner inner2 = new Outer.Inner();
-    inner2.innerFun();
-    // 方式三：通过普通成员方法，返回静态内部类的实例
-    Inner inner3 = outer.getInnerInstance();
-    inner3.innerFun();
-    // 方式三：通过静态方法，返回静态内部类的实例
-    Outer.Inner inner4 = Outer.getInnerInstance2();
-    inner4.innerFun();
-  }
-
-  static class Inner { // 内部类
-    static String name = "joshua317-inner";
-
-    public void innerFun() {
-      System.out.println("内部类静态成员" + name + "  外部类静态成员" + Outer.name);
+    public static void main(String[] args) {
+        Outer outer = new Outer();
+        // 方式一：内部直接访问
+        Inner inner1 = new Inner();
+        inner1.innerFun();
+        // 方式二：因为是静态内部类，可以通过类名直接访问(前提是满足访问权限)
+        Outer.Inner inner2 = new Outer.Inner();
+        inner2.innerFun();
+        // 方式三：通过普通成员方法，返回静态内部类的实例
+        Inner inner3 = outer.getInnerInstance();
+        inner3.innerFun();
+        // 方式三：通过静态方法，返回静态内部类的实例
+        Outer.Inner inner4 = Outer.getInnerInstance2();
+        inner4.innerFun();
     }
-  }
 
-  /**
-   * 通过方法，返回静态内部类的实例
-   *
-   * @return Inner
-   */
-  public Inner getInnerInstance() {
-    return new Inner();
-  }
+    static class Inner { // 内部类
+        static String name = "joshua317-inner";
 
-  public static Inner getInnerInstance2() {
-    return new Inner();
+        public void innerFun() {
+            System.out.println("内部类静态成员" + name + "  外部类静态成员" + Outer.name);
+        }
+    }
+
+    /**
+     * 通过方法，返回静态内部类的实例
+     *
+     * @return Inner
+     */
+    public Inner getInnerInstance() {
+        return new Inner();
+    }
+
+    public static Inner getInnerInstance2() {
+        return new Inner();
+    }
+}
+
+```
+
+# 9
+
+Point 是用户自定义的一个类，下面哪个语句是错误的____B_______。
+A. Object[] P=new Point[10];
+B. Point P[]=new Object[10];
+C. Point P[]={new Point(), new Point()};
+D. Point P[][]=new Point[10][];
+
+这个语句试图创建一个 Point 类型的数组，但指定的数组类型是 Object。在Java中，数组会在运行时强制检查元素的类型，以确保类型安全。由于
+Object 是所有类的父类，所以可以将任何类的对象存储在 Object 数组中，但不能将一个 Object 数组赋值给一个具体类的数组。
+
+# 10
+
+类中的一个成员方法被下面哪个修饰符修饰时，只能在本类中被使用_C___。
+A. public B. protected C. private D. default
+
+在Java中，default（或称为
+package-private）是一种访问修饰符，它表示成员（类、变量、方法等）对同一包中的其他类可见，但对于不在同一包中的类是不可见的。如果不指定任何访问修饰符，默认情况下，成员就会被视为具有
+default 访问权限。
+
+这意味着当你使用 default 修饰符时，被修饰的成员只能在同一个包中被访问，而无法被其他包中的类访问。这样可以控制成员的访问范围，使得一些实现细节对外部包隐藏起来，从而提高了代码的安全性和封装性。
+
+举个例子，假设有一个类 `MyClass`，其中有一个方法使用了 default 访问修饰符：
+
+```java
+package com.example;
+
+public class MyClass {
+    void myMethod() {
+        // 方法实现
+    }
+}
+```
+
+在同一个包中的其他类可以访问 `MyClass` 的 `myMethod()` 方法，例如：
+
+```java
+package com.example;
+
+public class AnotherClass {
+    public void anotherMethod() {
+        MyClass obj = new MyClass();
+        obj.myMethod();  // 可以访问 myMethod()
+    }
+}
+```
+
+然而，如果 `AnotherClass` 类不在 `com.example` 包中，那么它将无法访问 `MyClass` 的 `myMethod()` 方法。
+
+总之，default 修饰符提供了一种限制成员访问范围的方式，它使得同一包中的类可以访问，而其他包中的类不能访问被 default 修饰的成员。
+
+# 11
+
+在 Java 中要想让一个类继承另一个类，可以使用以下哪个关键字_C____。
+A. inherits B. implements C. extends D. super
+A啥也不是，不是关键字 ，super可以用来调用父类的相关属性
+
+# 12
+
+如果想让一个类中的方法不能被其子类重写，需要使用关键字____B______。
+A. static B. final C. transient D. abstract
+
+transient的用法：
+https://www.cnblogs.com/lanxuezaipiao/p/3369962.html
+
+# 13
+
+.以下哪个关键字用于在方法上声明抛出异常____D______。
+A. try B. catch C. finally D. throws
+
+try 和catch是在方法内部的，在过程执行逻辑上进行抛出的
+
+# 14
+
+.已知类的继承关系如下：
+class Employee{};
+class Manager extends Employee{};
+class Director extends Employee{};
+则以下语句能通过编译的是___D______。
+A. Employee e=new Manager(); B. Director d=new Manager();
+C. Director d=new Employee(); D. Manager m=new Director();
+
+这题答案错了，选A
+
+# 15
+
+.JFrame 默认的布局管理器是____B_____。
+A. FlowLayout B. BorderLayout C. GridLayout D. BoxLayout
+
+当我们使用不同的布局管理器时，可以通过简单的示例来展示它们的不同效果。以下是四种常见的布局管理器以及它们的含义、作用和代码示例：
+
+1. FlowLayout（流式布局）:
+    - 含义和作用：FlowLayout 是一种简单的布局管理器，它按照从左到右、从上到下的顺序排列组件。当一行放不下时，会自动换行。它适合用于需要依次排列组件的简单界面。
+    - 代码样例：
+
+   ```java
+   import javax.swing.*;
+   import java.awt.*;
+
+   public class FlowLayoutExample {
+       public static void main(String[] args) {
+           JFrame frame = new JFrame("FlowLayout Example");
+           frame.setLayout(new FlowLayout());
+
+           frame.add(new JButton("Button 1"));
+           frame.add(new JButton("Button 2"));
+           frame.add(new JButton("Button 3"));
+
+           frame.setSize(300, 200);
+           frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+           frame.setVisible(true);
+       }
+   }
+   ```
+
+`frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)` 是设置 JFrame 窗口的默认关闭操作。`JFrame.EXIT_ON_CLOSE`
+是一个常量，表示在关闭窗口时退出应用程序。
+
+当调用 `setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)`
+后，关闭窗口的操作将会终止应用程序的运行，即关闭窗口时应用程序将被完全关闭。这是一种常见的设置，通常用于主要的顶级窗口，比如应用程序的主窗口。
+
+另外，还有其他可选的关闭操作参数可以传递给 `setDefaultCloseOperation()` 方法，例如：
+
+- `JFrame.HIDE_ON_CLOSE`：关闭窗口时隐藏窗口，但不终止应用程序的运行。
+- `JFrame.DISPOSE_ON_CLOSE`：关闭窗口时释放窗口占用的资源，但不终止应用程序的运行。
+
+这些参数可以根据需要进行选择，以实现特定的关闭行为和应用程序逻辑。
+
+2. BorderLayout（边界布局）:
+    - 含义和作用：BorderLayout 将容器分为东、西、南、北、中五个区域，每个区域只能放置一个组件。通常用于设计具有明确定位的界面，比如主界面中的各个部分。
+    - 代码样例：
+
+   ```java
+   import javax.swing.*;
+   import java.awt.*;
+
+   public class BorderLayoutExample {
+       public static void main(String[] args) {
+           JFrame frame = new JFrame("BorderLayout Example");
+           frame.setLayout(new BorderLayout());
+
+           frame.add(new JButton("North"), BorderLayout.NORTH);
+           frame.add(new JButton("South"), BorderLayout.SOUTH);
+           frame.add(new JButton("East"), BorderLayout.EAST);
+           frame.add(new JButton("West"), BorderLayout.WEST);
+           frame.add(new JButton("Center"), BorderLayout.CENTER);
+
+           frame.setSize(300, 200);
+           frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+           frame.setVisible(true);
+       }
+   }
+   ```
+
+3. GridLayout（网格布局）:
+    - 含义和作用：GridLayout 将容器划分为固定行数和列数的网格，每个单元格可以放置一个组件。它适合用于将组件按照网格形式排列的界面，比如游戏棋盘。
+    - 代码样例：
+
+   ```java
+   import javax.swing.*;
+   import java.awt.*;
+
+   public class GridLayoutExample {
+       public static void main(String[] args) {
+           JFrame frame = new JFrame("GridLayout Example");
+           frame.setLayout(new GridLayout(2, 3));//设置了 JFrame 的布局管理器为 GridLayout，且指定了网格布局的行数为 2，列数为 3。
+
+           frame.add(new JButton("Button 1"));
+           frame.add(new JButton("Button 2"));
+           frame.add(new JButton("Button 3"));
+           frame.add(new JButton("Button 4"));
+           frame.add(new JButton("Button 5"));
+           frame.add(new JButton("Button 6"));
+
+           frame.setSize(300, 200);
+           frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+           frame.setVisible(true);
+       }
+   }
+   ```
+
+4. BoxLayout（盒式布局）:
+    - 含义和作用：BoxLayout 沿着一个方向（水平或垂直）依次排列所有组件，并可以指定组件的对齐方式。它适合用于需要灵活地控制组件在一个方向上的排列方式的界面。
+    - 代码样例：
+
+   ```java
+   import javax.swing.*;
+   import java.awt.*;
+
+   public class BoxLayoutExample {
+       public static void main(String[] args) {
+           JFrame frame = new JFrame("BoxLayout Example");
+           frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
+
+           frame.add(new JButton("Button 1"));
+           frame.add(Box.createVerticalStrut(10)); // 加入一些空白
+           frame.add(new JButton("Button 2"));
+           frame.add(Box.createVerticalGlue());   // 自动填充剩余空间
+           frame.add(new JButton("Button 3"));
+
+           frame.setSize(200, 300);
+           frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+           frame.setVisible(true);
+       }
+   }
+   ```
+
+`frame.getContentPane()` 是一个方法调用，用于获取 JFrame 的内容面板（content pane）。内容面板是 JFrame 中的一个容器，用于存放添加到窗口中的组件。
+
+在 Java Swing 中，JFrame 是顶级容器，而内容面板是位于 JFrame 内部的一个容器。内容面板可以通过 `getContentPane()` 方法来获取。
+
+通常情况下，我们会将组件添加到内容面板中，而不是直接添加到 JFrame 中。这是因为内容面板可以提供更好的布局和组件管理功能，而
+JFrame 则负责显示内容面板以及处理窗口相关的特性，如标题栏、边框等。
+
+使用 `frame.getContentPane()` 可以获取到内容面板对象，然后对该对象进行设置布局、添加组件等操作，以实现窗口中内容的定制和排列。
+
+`BoxLayout.Y_AXIS` 是 BoxLayout 类的一个静态常量，用于表示在 BoxLayout 中沿着 Y 轴（垂直方向）排列组件。
+
+当我们使用 `BoxLayout` 布局管理器时，可以通过指定 `BoxLayout.Y_AXIS` 或 `BoxLayout.X_AXIS`
+来指定组件的排列方向。在这里，`BoxLayout.Y_AXIS` 表示组件将按照垂直方向依次排列。
+
+这种灵活的方式使得我们可以根据需要在水平或垂直方向上排列组件，并且可以很方便地控制组件之间的间距和填充，使得界面布局更加灵活和符合设计要求。
+
+通过这些代码示例，你可以清晰地了解不同布局管理器的含义、作用以及如何在实际代码中使用它们来实现特定的界面布局效果。
+
+# 16
+
+以下哪个是 FileOutputStream 的父类____C______。
+A. File B. FileOutput C. OutputStream D. InputStream
+
+InputStream 和 OutputStream 是 Java 中用于处理字节流的抽象类。
+
+- **InputStream** 是所有字节输入流的超类，它定义了读取字节的基本方法。它是一个抽象类，不能被实例化，但有许多具体的子类，比如
+  FileInputStream 等，用于从各种数据源中读取字节数据。
+
+- **OutputStream** 是所有字节输出流的超类，它定义了写出字节的基本方法。同样也是一个抽象类，不能被实例化，但有许多具体的子类，比如
+  FileOutputStream 等，用于向各种目的地写出字节数据。
+
+这两个类在 Java 的 I/O
+操作中起着非常重要的作用，它们为字节流提供了统一的接口和基本的操作方法，使得我们可以方便地进行字节数据的读取和写入操作。通过这些类，我们可以处理文件、网络连接、内存缓冲区等各种数据源，实现非常灵活和高效的字节级别的
+I/O 操作。
+
+# 17
+
+可以读取 int、float 等类型数据的数据流是_____C____。
+A. FileInputStream B. FilterInputStream
+C. DataInputStream D. ObjectInputStream
+
+
+当使用FilterInputStream，FileInputStream，DataInputStream和ObjectInputStream时，可以根据具体的需求来进行不同的操作。以下是针对每个类的简单示例：
+
+1. 使用FileInputStream读取文件数据：
+```java
+try {
+    FileInputStream fileInput = new FileInputStream("data.txt");
+    int data;
+    while ((data = fileInput.read()) != -1) {
+        System.out.print((char) data);
+    }
+    fileInput.close();
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+直接从文件中读取的二进制数据
+2. 使用DataInputStream读取基本数据类型：
+```java
+try {
+    FileInputStream fileInput = new FileInputStream("data.bin");
+    DataInputStream dataInput = new DataInputStream(fileInput);
+    int intValue = dataInput.readInt();
+    double doubleValue = dataInput.readDouble();
+    System.out.println("Int value: " + intValue);
+    System.out.println("Double value: " + doubleValue);
+    dataInput.close();
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+DataInputStream是Java中的一个输入流类，它继承自FilterInputStream类。DataInputStream的作用是将字节输入流（如FileInputStream）转换为更方便读取基本数据类型的数据流。
+
+具体来说，DataInputStream提供了一组方法来读取不同类型的基本数据类型，如整数、浮点数、字符等。这些方法包括readInt()、readDouble()、readChar()等。DataInputStream还提供了方法来读取字符串和字节数组。
+
+当你使用FileInputStream读取二进制文件时，数据是以字节的形式存储的。而使用DataInputStream包装FileInputStream后，你可以使用DataInputStream提供的方法方便地读取二进制文件中的基本数据类型的数据，而无需手动解析字节。
+
+例如，当你读取一个整型数据时，使用DataInputStream的readInt()方法会自动从字节流中读取4个字节，并将其解析为一个整数值。这样你就可以直接处理整数数据，而无需手动读取和解析字节。
+
+总之，DataInputStream通过对底层字节流的包装，提供了一组方便读取基本数据类型的方法，简化了从字节流中读取数据的过程。它使得读取二进制文件中的数据变得更加高效和便捷。
+3. 使用ObjectInputStream读取对象数据：
+```java
+try {
+    FileInputStream fileInput = new FileInputStream("object.dat");
+    ObjectInputStream objectInput = new ObjectInputStream(fileInput);
+    MyClass obj = (MyClass) objectInput.readObject();
+    System.out.println("Object data: " + obj.toString());
+    objectInput.close();
+} catch (IOException | ClassNotFoundException e) {
+    e.printStackTrace();
+}
+```
+ObjectInputStream 是 Java 中用于从输入流中读取对象的类。它扩展了 DataInputStream 类，并提供了一种从流中读取对象并将其反序列化为 Java 对象的机制。
+
+当你需要从文件或网络流中读取保存的对象时，ObjectInputStream 可以帮助你将对象的字节表示转换回对象实例。这使得在 Java 程序之间传递对象数据变得更加方便，同时也为对象的持久化和恢复提供了支持。需要注意的是，要求被读取的对象的类必须是可序列化的，即需要实现 Serializable 接口。如果对象所属的类没有实现 Serializable 接口，那么在尝试进行序列化和反序列化时会抛出 NotSerializableException 异常。
+
+序列化：
+https://www.runoob.com/java/java-serialization.html
+
+4. 使用FilterInputStream的子类进行包装和过滤：
+```java
+try {
+    FileInputStream fileInput = new FileInputStream("data.txt");
+    BufferedInputStream bufferedInput = new BufferedInputStream(fileInput);
+    FilterInputStream filterInput = new FilterInputStream(bufferedInput) {
+        // 这里可以添加自定义的过滤逻辑
+    };
+    int data;
+    while ((data = filterInput.read()) != -1) {
+        System.out.print((char) data);
+    }
+    filterInput.close();
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+FilterInputStream 是 Java 中用于提供输入流过滤功能的抽象类。它本身并不直接实现任何具体的输入操作，而是作为其他输入流的包装器，通过对其他输入流进行过滤和处理来提供额外的功能。
+
+FilterInputStream 的子类可以通过重写其方法，以提供不同的过滤行为。例如，BufferedInputStream 就是 FilterInputStream 的一个子类，它提供了输入缓冲功能，可以提高读取性能。
+
+另一个常见的子类是 DataInputStream，它提供了从输入流中读取基本数据类型的功能，如整数、浮点数等。ObjectInputStream 也是 FilterInputStream 的子类，它提供了从输入流中读取对象的功能。
+
+FilterInputStream 本身提供了一些基本的过滤功能，比如 markSupported() 方法用于检查该输入流是否支持标记和重置操作，mark(int readlimit) 和 reset() 方法用于在流中标记当前位置，并在需要时返回到该位置。
+
+总之，FilterInputStream 为输入流的包装提供了一个灵活的机制，使得我们可以通过组合不同的过滤器来实现各种输入流的组合和功能增强。这种设计符合 Java IO 模型中的装饰器模式，使得输入流的处理变得更加灵活和可扩展。
+
+在这些示例中，我们演示了如何使用FileInputStream、DataInputStream和ObjectInputStream读取文件数据和对象数据，并且展示了如何通过包装和过滤来扩展输入流的功能。这些类提供了丰富的功能和灵活性，可以满足不同场景下的数据读取需求。
+
+
+
+https://www.runoob.com/java/java-files-io.html
+
+流阅读器BufferedReader
+
+```java
+import java.io.*;
+
+public class BRRead {
+    public static void main(String[] args) throws IOException {
+        char c;
+        // 使用 System.in 创建 BufferedReader
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("输入字符, 按下 'q' 键退出。");
+        // 读取字符
+        do {
+            c = (char) br.read();
+            System.out.println(c);
+//           str = br.readLine();
+//           System.out.println(str);
+        } while (c != 'q');
+    }
+}
+
+```
+PrintStream
+
+```java
+import java.io.*;
+
+// 演示 System.out.write().
+public class WriteDemo {
+  public static void main(String[] args) {
+    int b;
+    b = 'A';
+    System.out.write(b);
+    System.out.write('\n');
   }
 }
 
 ```
+可以实现向控制台输出的作用，与println效果相同
+
+![img.png](img.png)
+
+FileInputStream与FileOutputStream
+
+```java
+File f = new File("C:/java/hello");
+InputStream in = new FileInputStream(f);
+```
+ByteArrayOutputStream
+```java
+import java.io.*;
+
+public class ByteStreamTest {
+
+   public static void main(String args[])throws IOException {
+
+      ByteArrayOutputStream bOutput = new ByteArrayOutputStream(12);
+
+      while( bOutput.size()!= 10 ) {
+         // 获取用户输入值
+         bOutput.write(System.in.read());
+      }
+
+      byte b [] = bOutput.toByteArray();
+      System.out.println("Print the content");
+      for(int x= 0 ; x < b.length; x++) {
+         // 打印字符
+         System.out.print((char)b[x]  + "   ");
+      }
+      System.out.println("   ");
+
+      int c;
+
+      ByteArrayInputStream bInput = new ByteArrayInputStream(b);
+
+      System.out.println("Converting characters to Upper case " );
+      for(int y = 0 ; y < 1; y++ ) {
+         while(( c= bInput.read())!= -1) {
+            System.out.println(Character.toUpperCase((char)c));
+         }
+         bInput.reset();
+      }
+   }
+}
+
+```
+FileOutputStream
+```java
+File f = new File("C:/java/hello");
+OutputStream fOut = new FileOutputStream(f);
+```
+
+
+
+使用样例演示代码：
+```java
+import java.io.*;
+
+public class fileStreamTest {
+  public static void main(String[] args) {
+    try {
+      byte bWrite[] = {11, 21, 3, 40, 5}; // -128~127之间可存储
+      OutputStream os = new FileOutputStream("test.txt");
+      for (int x = 0; x < bWrite.length; x++) {
+        os.write(bWrite[x]); // writes the bytes
+      }
+      os.close();
+
+      InputStream is = new FileInputStream("test.txt");
+      int size = is.available();
+      // 它用于返回当前输入流中可读取的字节数。另外，is.available() 方法是一个阻塞方法，如果没有数据可读取，它会一直等待直到有数据可用。因此，在使用
+      // is.available() 方法时，要确保输入流中有数据可读取，否则可能会导致程序停滞。
+
+      for (int i = 0; i < size; i++) {
+        System.out.print((char) is.read() + "  ");
+      }
+      is.close();
+    } catch (IOException e) {
+      System.out.print("Exception");
+    }
+  }
+}
+
+```
+
+
+# 18
+线程调用 sleep()方法后，该线程将进入哪种状态____C_______。
+A. 就绪状态 B. 运行状态 C. 阻塞状态 D. 死亡状态
+
+https://www.runoob.com/java/java-multithreading.html
+
+#### 一个线程完整的生命周期
+![img_1.png](img_1.png)
+
+如果一个线程执行了sleep（睡眠）、suspend（挂起）等方法，失去所占用资源之后，该线程就从运行状态进入阻塞状态。在睡眠时间已到或获得设备资源后可以重新进入就绪状态。可以分为三种：
+
+- 等待阻塞：运行状态中的线程执行 wait() 方法，使线程进入到等待阻塞状态。
+
+- 同步阻塞：线程在获取 synchronized 同步锁失败(因为同步锁被其他线程占用)。
+
+- 其他阻塞：通过调用线程的 sleep() 或 join() 发出了 I/O 请求时，线程就会进入到阻塞状态。当sleep() 状态超时，join() 等待线程终止或超时，或者 I/O 处理完毕，线程重新转入就绪状态。
+
+
+两种线程写法：
+```java
+class RunnableDemo implements Runnable {
+  private Thread t;
+  private String threadName;
+
+  RunnableDemo(String name) {
+    threadName = name;
+    System.out.println("Creating " + threadName);
+  }
+
+  public void run() {
+    System.out.println("Running " + threadName);
+    try {
+      for (int i = 4; i > 0; i--) {
+        System.out.println("Thread: " + threadName + ", " + i);
+        // 让线程睡眠一会
+        Thread.sleep(50);
+      }
+    } catch (InterruptedException e) {
+      System.out.println("Thread " + threadName + " interrupted.");
+    }
+    System.out.println("Thread " + threadName + " exiting.");
+  }
+
+  public void start() {
+    System.out.println("Starting " + threadName);
+    if (t == null) {
+      t = new Thread(this, threadName);
+      t.start();
+    }
+  }
+}
+
+public class TestThread {
+
+  public static void main(String args[]) {
+    RunnableDemo R1 = new RunnableDemo("Thread-1");
+    R1.start();
+
+    RunnableDemo R2 = new RunnableDemo("Thread-2");
+    R2.start();
+  }
+}
+
+```
+
+```java
+package Exam.Selection;
+
+class ThreadDemo extends Thread {
+  private Thread t;
+  private final String threadName;
+
+  ThreadDemo(String name) {
+    threadName = name;
+    System.out.println("Creating " + threadName);
+  }
+
+  public void run() {
+    System.out.println("Running " + threadName);
+    try {
+      for (int i = 4; i > 0; i--) {
+        System.out.println("Thread: " + threadName + ", " + i);
+        // 让线程睡眠一会
+        Thread.sleep(50);
+      }
+    } catch (InterruptedException e) {
+      System.out.println("Thread " + threadName + " interrupted.");
+    }
+    System.out.println("Thread " + threadName + " exiting.");
+  }
+
+  public void start() {
+    System.out.println("Starting " + threadName);
+    if (t == null) {
+      t = new Thread(this, threadName);
+      t.start();
+    }
+  }
+}
+
+public class TestThread1 {
+
+  public static void main(String[] args) {
+    ThreadDemo T1 = new ThreadDemo("Thread-1");
+    T1.start();
+
+    ThreadDemo T2 = new ThreadDemo("Thread-2");
+    T2.start();
+  }
+}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

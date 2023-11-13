@@ -675,7 +675,481 @@ InputStream 和 OutputStream 是 Java 中用于处理字节流的抽象类。
 I/O 操作。
 
 # 17
+
 可以读取 int、float 等类型数据的数据流是_____C____。
 A. FileInputStream B. FilterInputStream
 C. DataInputStream D. ObjectInputStream
+
+当使用FilterInputStream，FileInputStream，DataInputStream和ObjectInputStream时，可以根据具体的需求来进行不同的操作。以下是针对每个类的简单示例：
+
+1. 使用FileInputStream读取文件数据：
+
+```java
+try{
+        FileInputStream fileInput=new FileInputStream("data.txt");
+        int data;
+        while((data=fileInput.read())!=-1){
+        System.out.print((char)data);
+        }
+        fileInput.close();
+        }catch(IOException e){
+        e.printStackTrace();
+        }
+```
+
+直接从文件中读取的二进制数据
+
+2. 使用DataInputStream读取基本数据类型：
+
+```java
+try{
+        FileInputStream fileInput=new FileInputStream("data.bin");
+        DataInputStream dataInput=new DataInputStream(fileInput);
+        int intValue=dataInput.readInt();
+        double doubleValue=dataInput.readDouble();
+        System.out.println("Int value: "+intValue);
+        System.out.println("Double value: "+doubleValue);
+        dataInput.close();
+        }catch(IOException e){
+        e.printStackTrace();
+        }
+```
+
+DataInputStream是Java中的一个输入流类，它继承自FilterInputStream类。DataInputStream的作用是将字节输入流（如FileInputStream）转换为更方便读取基本数据类型的数据流。
+
+具体来说，DataInputStream提供了一组方法来读取不同类型的基本数据类型，如整数、浮点数、字符等。这些方法包括readInt()
+、readDouble()、readChar()等。DataInputStream还提供了方法来读取字符串和字节数组。
+
+当你使用FileInputStream读取二进制文件时，数据是以字节的形式存储的。而使用DataInputStream包装FileInputStream后，你可以使用DataInputStream提供的方法方便地读取二进制文件中的基本数据类型的数据，而无需手动解析字节。
+
+例如，当你读取一个整型数据时，使用DataInputStream的readInt()方法会自动从字节流中读取4个字节，并将其解析为一个整数值。这样你就可以直接处理整数数据，而无需手动读取和解析字节。
+
+总之，DataInputStream通过对底层字节流的包装，提供了一组方便读取基本数据类型的方法，简化了从字节流中读取数据的过程。它使得读取二进制文件中的数据变得更加高效和便捷。
+
+3. 使用ObjectInputStream读取对象数据：
+
+```java
+try{
+        FileInputStream fileInput=new FileInputStream("object.dat");
+        ObjectInputStream objectInput=new ObjectInputStream(fileInput);
+        MyClass obj=(MyClass)objectInput.readObject();
+        System.out.println("Object data: "+obj.toString());
+        objectInput.close();
+        }catch(IOException|ClassNotFoundException e){
+        e.printStackTrace();
+        }
+```
+
+ObjectInputStream 是 Java 中用于从输入流中读取对象的类。它扩展了 DataInputStream 类，并提供了一种从流中读取对象并将其反序列化为
+Java 对象的机制。
+
+当你需要从文件或网络流中读取保存的对象时，ObjectInputStream 可以帮助你将对象的字节表示转换回对象实例。这使得在 Java
+程序之间传递对象数据变得更加方便，同时也为对象的持久化和恢复提供了支持。需要注意的是，要求被读取的对象的类必须是可序列化的，即需要实现
+Serializable 接口。如果对象所属的类没有实现 Serializable 接口，那么在尝试进行序列化和反序列化时会抛出
+NotSerializableException 异常。
+
+序列化：
+https://www.runoob.com/java/java-serialization.html
+
+4. 使用FilterInputStream的子类进行包装和过滤：
+
+```java
+try{
+        FileInputStream fileInput=new FileInputStream("data.txt");
+        BufferedInputStream bufferedInput=new BufferedInputStream(fileInput);
+        FilterInputStream filterInput=new FilterInputStream(bufferedInput){
+        // 这里可以添加自定义的过滤逻辑
+        };
+        int data;
+        while((data=filterInput.read())!=-1){
+        System.out.print((char)data);
+        }
+        filterInput.close();
+        }catch(IOException e){
+        e.printStackTrace();
+        }
+```
+
+FilterInputStream 是 Java 中用于提供输入流过滤功能的抽象类。它本身并不直接实现任何具体的输入操作，而是作为其他输入流的包装器，通过对其他输入流进行过滤和处理来提供额外的功能。
+
+FilterInputStream 的子类可以通过重写其方法，以提供不同的过滤行为。例如，BufferedInputStream 就是 FilterInputStream
+的一个子类，它提供了输入缓冲功能，可以提高读取性能。
+
+另一个常见的子类是 DataInputStream，它提供了从输入流中读取基本数据类型的功能，如整数、浮点数等。ObjectInputStream 也是
+FilterInputStream 的子类，它提供了从输入流中读取对象的功能。
+
+FilterInputStream 本身提供了一些基本的过滤功能，比如 markSupported() 方法用于检查该输入流是否支持标记和重置操作，mark(int
+readlimit) 和 reset() 方法用于在流中标记当前位置，并在需要时返回到该位置。
+
+总之，FilterInputStream 为输入流的包装提供了一个灵活的机制，使得我们可以通过组合不同的过滤器来实现各种输入流的组合和功能增强。这种设计符合
+Java IO 模型中的装饰器模式，使得输入流的处理变得更加灵活和可扩展。
+
+在这些示例中，我们演示了如何使用FileInputStream、DataInputStream和ObjectInputStream读取文件数据和对象数据，并且展示了如何通过包装和过滤来扩展输入流的功能。这些类提供了丰富的功能和灵活性，可以满足不同场景下的数据读取需求。
+
+https://www.runoob.com/java/java-files-io.html
+
+流阅读器BufferedReader
+
+```java
+import java.io.*;
+
+public class BRRead {
+    public static void main(String[] args) throws IOException {
+        char c;
+        // 使用 System.in 创建 BufferedReader
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("输入字符, 按下 'q' 键退出。");
+        // 读取字符
+        do {
+            c = (char) br.read();
+            System.out.println(c);
+//           str = br.readLine();
+//           System.out.println(str);
+        } while (c != 'q');
+    }
+}
+
+```
+
+PrintStream
+
+```java
+import java.io.*;
+
+// 演示 System.out.write().
+public class WriteDemo {
+    public static void main(String[] args) {
+        int b;
+        b = 'A';
+        System.out.write(b);
+        System.out.write('\n');
+    }
+}
+
+```
+
+可以实现向控制台输出的作用，与println效果相同
+
+![img.png](img.png)
+
+FileInputStream与FileOutputStream
+
+```java
+File f=new File("C:/java/hello");
+        InputStream in=new FileInputStream(f);
+```
+
+ByteArrayOutputStream
+
+```java
+import java.io.*;
+
+public class ByteStreamTest {
+
+    public static void main(String args[]) throws IOException {
+
+        ByteArrayOutputStream bOutput = new ByteArrayOutputStream(12);
+
+        while (bOutput.size() != 10) {
+            // 获取用户输入值
+            bOutput.write(System.in.read());
+        }
+
+        byte b[] = bOutput.toByteArray();
+        System.out.println("Print the content");
+        for (int x = 0; x < b.length; x++) {
+            // 打印字符
+            System.out.print((char) b[x] + "   ");
+        }
+        System.out.println("   ");
+
+        int c;
+
+        ByteArrayInputStream bInput = new ByteArrayInputStream(b);
+
+        System.out.println("Converting characters to Upper case ");
+        for (int y = 0; y < 1; y++) {
+            while ((c = bInput.read()) != -1) {
+                System.out.println(Character.toUpperCase((char) c));
+            }
+            bInput.reset();
+        }
+    }
+}
+
+```
+
+FileOutputStream
+
+```java
+File f=new File("C:/java/hello");
+        OutputStream fOut=new FileOutputStream(f);
+```
+
+使用样例演示代码：
+
+```java
+import java.io.*;
+
+public class fileStreamTest {
+    public static void main(String[] args) {
+        try {
+            byte bWrite[] = {11, 21, 3, 40, 5}; // -128~127之间可存储
+            OutputStream os = new FileOutputStream("test.txt");
+            for (int x = 0; x < bWrite.length; x++) {
+                os.write(bWrite[x]); // writes the bytes
+            }
+            os.close();
+
+            InputStream is = new FileInputStream("test.txt");
+            int size = is.available();
+            // 它用于返回当前输入流中可读取的字节数。另外，is.available() 方法是一个阻塞方法，如果没有数据可读取，它会一直等待直到有数据可用。因此，在使用
+            // is.available() 方法时，要确保输入流中有数据可读取，否则可能会导致程序停滞。
+
+            for (int i = 0; i < size; i++) {
+                System.out.print((char) is.read() + "  ");
+            }
+            is.close();
+        } catch (IOException e) {
+            System.out.print("Exception");
+        }
+    }
+}
+
+```
+
+# 18
+
+线程调用 sleep()方法后，该线程将进入哪种状态____C_______。
+A. 就绪状态 B. 运行状态 C. 阻塞状态 D. 死亡状态
+
+https://www.runoob.com/java/java-multithreading.html
+
+#### 一个线程完整的生命周期
+
+![img_1.png](img_1.png)
+
+如果一个线程执行了sleep（睡眠）、suspend（挂起）等方法，失去所占用资源之后，该线程就从运行状态进入阻塞状态。在睡眠时间已到或获得设备资源后可以重新进入就绪状态。可以分为三种：
+
+- 等待阻塞：运行状态中的线程执行 wait() 方法，使线程进入到等待阻塞状态。
+
+- 同步阻塞：线程在获取 synchronized 同步锁失败(因为同步锁被其他线程占用)。
+
+- 其他阻塞：通过调用线程的 sleep() 或 join() 发出了 I/O 请求时，线程就会进入到阻塞状态。当sleep() 状态超时，join()
+  等待线程终止或超时，或者 I/O 处理完毕，线程重新转入就绪状态。
+
+两种线程写法：
+
+```java
+class RunnableDemo implements Runnable {
+    private Thread t;
+    private String threadName;
+
+    RunnableDemo(String name) {
+        threadName = name;
+        System.out.println("Creating " + threadName);
+    }
+
+    public void run() {
+        System.out.println("Running " + threadName);
+        try {
+            for (int i = 4; i > 0; i--) {
+                System.out.println("Thread: " + threadName + ", " + i);
+                // 让线程睡眠一会
+                Thread.sleep(50);
+            }
+        } catch (InterruptedException e) {
+            System.out.println("Thread " + threadName + " interrupted.");
+        }
+        System.out.println("Thread " + threadName + " exiting.");
+    }
+
+    public void start() {
+        System.out.println("Starting " + threadName);
+        if (t == null) {
+            t = new Thread(this, threadName);
+            t.start();
+        }
+    }
+}
+
+public class TestThread {
+
+    public static void main(String args[]) {
+        RunnableDemo R1 = new RunnableDemo("Thread-1");
+        R1.start();
+
+        RunnableDemo R2 = new RunnableDemo("Thread-2");
+        R2.start();
+    }
+}
+
+```
+
+```java
+package Exam.Selection;
+
+class ThreadDemo extends Thread {
+    private Thread t;
+    private final String threadName;
+
+    ThreadDemo(String name) {
+        threadName = name;
+        System.out.println("Creating " + threadName);
+    }
+
+    public void run() {
+        System.out.println("Running " + threadName);
+        try {
+            for (int i = 4; i > 0; i--) {
+                System.out.println("Thread: " + threadName + ", " + i);
+                // 让线程睡眠一会
+                Thread.sleep(50);
+            }
+        } catch (InterruptedException e) {
+            System.out.println("Thread " + threadName + " interrupted.");
+        }
+        System.out.println("Thread " + threadName + " exiting.");
+    }
+
+    public void start() {
+        System.out.println("Starting " + threadName);
+        if (t == null) {
+            t = new Thread(this, threadName);
+            t.start();
+        }
+    }
+}
+
+public class TestThread1 {
+
+    public static void main(String[] args) {
+        ThreadDemo T1 = new ThreadDemo("Thread-1");
+        T1.start();
+
+        ThreadDemo T2 = new ThreadDemo("Thread-2");
+        T2.start();
+    }
+}
+
+```
+
+![img_2.png](img_2.png)
+![img_3.png](img_3.png)
+
+# 19
+
+在 Java 中，使用哪个关键字来保证线程的同步____B______。
+A. serializable B. synchronized C. interrupt D. join
+
+简单来讲，_synchronized_ 就是一个只允许一个运行的定义方式
+
+synchronized 是 Java 中用于实现线程同步的关键字。它可以应用于方法或代码块上，用于控制多个线程对共享资源的访问。
+
+当一个线程执行带有 synchronized 关键字修饰的方法或进入 synchronized
+代码块时，它会尝试获取对象的锁。如果该锁没有被其他线程占用，则该线程获取到锁并可以执行代码。如果锁已经被其他线程占用，则该线程将被阻塞，直到获取到锁为止。
+
+synchronized 实现了独占锁的机制，即同一时刻只有一个线程能够执行 synchronized
+代码块中的代码。这种机制确保了多个线程对共享资源的安全访问，避免了竞态条件和数据不一致的问题。
+
+synchronized 还具有可重入性，即线程可以多次获取同一个对象的锁。在一个线程已经持有锁的情况下，当它再次执行 synchronized
+方法或进入 synchronized 代码块时，它仍然可以获取到该对象的锁。
+
+需要注意的是，synchronized 是一种悲观锁，它会导致线程的阻塞和唤醒，可能影响程序的性能。因此，在使用 synchronized
+时需要合理地选择同步粒度，避免过多的线程竞争。
+
+总之，synchronized 是 Java 中用于实现线程同步的关键字，通过加锁和解锁操作来控制对共享资源的访问。它提供了一种简单而有效的方式来保证多线程环境下的数据安全性。
+
+当一个账户余额被多个线程同时访问和修改时，可以使用 synchronized 关键字来确保对账户余额的安全操作。
+
+```java
+public class BankAccount {
+    private int balance;
+
+    public synchronized void deposit(int amount) {
+        balance += amount;
+    }
+
+    public synchronized void withdraw(int amount) {
+        if (balance >= amount) {
+            balance -= amount;
+        } else {
+            System.out.println("Insufficient balance");
+        }
+    }
+
+    public synchronized int getBalance() {
+        return balance;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        BankAccount account = new BankAccount();
+
+        // 创建两个线程进行存款和取款操作
+        Thread depositThread =
+                new Thread(
+                        () -> {
+                            account.deposit(100);
+                        });
+
+        Thread withdrawThread =
+                new Thread(
+                        () -> {
+                            account.withdraw(50);
+                        });
+
+        depositThread.start();
+        withdrawThread.start();
+
+        try {
+            depositThread.join();
+            withdrawThread.join();
+            //当一个线程调用另一个线程的join()方法时，它会暂停自己的执行，并等待被调用线程执行完成。也就是说，调用了join()方法的线程会进入阻塞状态，直到被调用线程执行完毕或达到指定的超时时间。
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Final balance: " + account.getBalance());
+    }
+}
+
+```
+
+在上面的例子中，BankAccount 类表示一个银行账户，其中的 deposit、withdraw 和 getBalance 方法都使用了 synchronized
+关键字。这样一来，无论是存款还是取款操作，都会在执行时获取 BankAccount
+对象的锁，确保同一时刻只有一个线程能够对账户余额进行操作。这样就避免了多个线程同时修改账户余额导致的数据不一致问题。
+
+在 Main 类中，创建了两个线程进行存款和取款操作，并通过 join 方法等待这两个线程执行完毕。最后打印出最终的账户余额。
+
+通过使用 synchronized 关键字，可以保证线程安全地对共享资源进行操作，确保数据的正确性和一致性。
+
+
+# 20
+下面哪个是 Java 提供的面向应用层编程的类_____D_____。
+A. InetAddress B.Socket C. URL D. ServerSocket
+
+![img_4.png](img_4.png)
+
+https://blog.csdn.net/dyx1993/article/details/113985648
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
