@@ -1,6 +1,5 @@
 package Exam.program;
 
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -19,7 +18,6 @@ public class Server {
     int sum = 0;
     while (dataInputStream.available() > 0) {
       int number = dataInputStream.readInt();
-//      System.out.println(number);
       sum += number;
     }
 
@@ -30,10 +28,9 @@ public class Server {
     dataOutputStream.writeInt(sum);
     System.out.println("the data has been sent");
 
-    outputStream.close();
     dataOutputStream.close();
-
     dataInputStream.close();
+    outputStream.close();
     inputStream.close();
   }
 }

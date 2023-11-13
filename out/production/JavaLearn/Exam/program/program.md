@@ -128,6 +128,98 @@ Server，其中，Client 为客户端，Server 为服务器端。客户端通过
 
 
 
+```java
+
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Server {
+  public static void main(String[] args) throws IOException {
+
+    ServerSocket serverSocket = new ServerSocket(8080);
+    System.out.println("waiting ...");
+    Socket socket = serverSocket.accept();
+    System.out.println("connected!");
+
+    InputStream inputStream = socket.getInputStream();
+    DataInputStream dataInputStream = new DataInputStream(inputStream);
+
+    int sum = 0;
+    while (dataInputStream.available() > 0) {
+      int number = dataInputStream.readInt();
+//      System.out.println(number);
+      sum += number;
+    }
+
+    System.out.println("calculated!");
+
+    OutputStream outputStream = socket.getOutputStream();
+    DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
+    dataOutputStream.writeInt(sum);
+    System.out.println("the data has been sent");
+
+    outputStream.close();
+    dataOutputStream.close();
+
+    dataInputStream.close();
+    inputStream.close();
+  }
+}
+
+```
+```java
+import java.io.*;
+import java.net.Socket;
+
+public class Client {
+  public static void main(String[] args) throws IOException {
+    Socket socket = new Socket("localhost", 8080);
+
+    OutputStream outputStream = socket.getOutputStream();
+    DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
+    int[] arrayInt = {1, 2, 3, 4, 5};
+    for (int i : arrayInt) {
+      dataOutputStream.writeInt(i);
+    }
+
+    dataOutputStream.flush();
+
+    InputStream inputStream = socket.getInputStream();
+    DataInputStream dataInputStream = new DataInputStream(inputStream);
+
+    System.out.println(dataInputStream.readInt());
+
+    dataOutputStream.close();
+    outputStream.close();
+    inputStream.close();
+    dataOutputStream.close();
+  }
+}
+
+```
+
+
+#### 注释：
+`accept()`方法是`ServerSocket`类中的一个方法，它用于监听客户端的连接请求，并在有新的连接请求到达时接受该连接并返回一个`Socket`对象，用于与客户端进行通信。
+
+具体来说，当调用`accept()`方法时，它会阻塞当前线程，直到有新的连接请求到达。一旦有新的连接请求到达，`accept()`方法将返回一个新的`Socket`对象，通过这个`Socket`对象，服务器端可以与客户端进行通信。
+
+在您的代码中，`serverSocket.accept()`语句用于接受客户端的连接请求，并返回一个`Socket`对象来表示与客户端的通信。这个`Socket`对象将在之后被用于接收和发送数据。
+
+总之，`accept()`方法是用于接受客户端连接请求的重要方法，它是服务器端建立通信的关键步骤之一。
+
+
+在Java中，`available()`方法是用于获取输入流中可以被读取的字节数。具体来说，对于`InputStream`或者其子类，`available()`方法返回的是当前可读取的字节数，而不会阻塞线程等待更多的数据到达。
+
+在您的代码中，`dataInputStream.available()`被用于检查输入流中是否还有可读取的数据，以便进行循环读取操作。然而，需要注意的是，`available()`方法的返回值并不总是准确的，它只是一个估计值，并不代表实际上可以读取的字节数。
+
+因此，在使用`available()`方法时，应该谨慎处理，最好结合其他条件和逻辑来确保正确地读取输入流中的数据。特别是在网络通信中，`available()`方法的返回值可能并不准确，因为数据可能还在传输过程中，尚未完全到达。
+
+如果您发现在使用`available()`方法时出现了问题，建议结合其他方法来确保正确地读取输入流中的数据，例如使用循环读取并判断结束标识等方式来处理数据流。
+
+
+
 
 
 

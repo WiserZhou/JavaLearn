@@ -9,6 +9,7 @@ public class Client {
 
     OutputStream outputStream = socket.getOutputStream();
     DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
+
     int[] arrayInt = {1, 2, 3, 4, 5};
     for (int i : arrayInt) {
       dataOutputStream.writeInt(i);
