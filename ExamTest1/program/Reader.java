@@ -44,7 +44,7 @@ class FileReadWrite {
 public class Reader {
   public static void main(String[] args) {
     FileReadWrite fileReadWrite = new FileReadWrite();
-    String fileName = "students.txt";
+    String fileName = "Example/students.txt";
 
     fileReadWrite.addBooks(fileName);
     fileReadWrite.getBooks(fileName);
