@@ -1251,7 +1251,7 @@ public class SocketServer {
     }
 
     public static void main(String[] args) {
-        SocketServer socketServer = new SocketServer();
+        Example.SocketServer socketServer = new Example.SocketServer();
     }
 }
 ```
