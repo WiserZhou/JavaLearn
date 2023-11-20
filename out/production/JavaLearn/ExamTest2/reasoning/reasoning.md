@@ -70,7 +70,9 @@ public class Test3C {
 ```
 654021
 ```
+
 # 4
+
 ```java
 public class Test3D {
   public static void main(String[] args) {
@@ -103,6 +105,15 @@ class M extends P {
 
 class N extends P {}
 
+```
+
+程序运行结果为：
+
+```
+P
+M.f
+P
+P.f
 ```
 
 
