@@ -215,6 +215,7 @@ C. Outer.Inner in = new Outer.Inner();
 D. Outer.Inner in = new Outer().new.Inner();
 
 ## 组合性：
+
 ![img.png](img.png)
 
 ```java
@@ -424,33 +425,389 @@ public class OuterClass {
 
 ```java
 public class TestAnonymousInnerClass {
-  public static void main(String[] args) {
-    TestAnonymousInnerClass test = new TestAnonymousInnerClass();
-    test.show();
-    // In this method, an anonymous inner class is constructed
+    public static void main(String[] args) {
+        TestAnonymousInnerClass test = new TestAnonymousInnerClass();
+        test.show();
+        // In this method, an anonymous inner class is constructed
 
-    Out anonyInter =
-        new Out() {
-          // Override a method from the superclass
-          void show() {
-            System.out.println("This is anonymous inner class showing. 😊");
-          }
-        };
+        Out anonyInter =
+                new Out() {
+                    // Override a method from the superclass
+                    void show() {
+                        System.out.println("This is anonymous inner class showing. 😊");
+                    }
+                };
 
-    anonyInter.show(); // Call its method
+        anonyInter.show(); // Call its method
 
-    // This is an already existing class. By overriding its method, the anonymous inner class will
-    // provide a different implementation
-    class Out {
-      void show() {
-        System.out.println("This is Out showing. 😄");
-      }
+        // This is an already existing class. By overriding its method, the anonymous inner class will
+        // provide a different implementation
+        class Out {
+            void show() {
+                System.out.println("This is Out showing. 😄");
+            }
+        }
     }
-  }
 
-  private void show() {
-    System.out.println("This is TestAnonymousInnerClass showing. 😉");
-  }
+    private void show() {
+        System.out.println("This is TestAnonymousInnerClass showing. 😉");
+    }
 }
 
 ```
+
+# 9
+
+9.下列哪个不是 Java 中的基本数据类型____D_______。
+A. double B. char C. int D. String
+
+D. String不是Java中的基本数据类型。Java中的基本数据类型包括：
+
+1. 数值类型：
+    - 整数类型：byte、short、int、long
+    - 浮点类型：float、double
+
+2. 字符类型：
+    - char
+
+3. 布尔类型：
+    - boolean
+
+String是Java中的一种引用类型，它用于表示字符串，而不是基本数据类型。
+
+# 10
+
+10.Java 的字符类型采用的是 Unicode 编码方案，每个 Unicode 码占多少位__B__。
+A. 8 B. 16 C. 32 D. 64
+
+B. 16。Java的字符类型采用的是Unicode编码方案，每个Unicode码占16位，也就是2个字节。在Java中，**字符类型char占用2个字节（16位）**
+，可以表示65536个不同的字符。
+
+# 11
+
+11.在 Java 中，要想让一个类实现一个接口，可以使用以下哪个关键字__B___。
+A. inherits B. implements C. extends D. super
+
+# 12
+
+12.下列叙述中哪个是不正确的____B______。
+A. final 类不可以有子类
+B. abstract 类不可以有 abstract 的静态方法
+C. abstract 类中可以有非 abstract 方法，但该方法不可以用 final 修饰
+D.不可以同时用 final 和 abstract 修饰一个方法
+
+B. abstract 类不可以有 abstract 的静态方法
+
+这个叙述是不正确的。在Java中，abstract类可以拥有静态方法，但是这些静态方法不能被声明为abstract。事实上，abstract类中的静态方法会被继承，并且它们可以被子类直接调用。
+
+当我们在一个abstract类中定义静态方法时，这些静态方法可以被继承并在子类中直接调用。以下是一个简单的示例：
+
+```java
+abstract class AbstractClass {
+    public static void staticMethod() {
+        System.out.println("Static method in abstract class");
+    }
+
+    public abstract void abstractMethod();
+}
+
+class ConcreteClass extends AbstractClass {
+    public void abstractMethod() {
+        System.out.println("Implemented abstract method");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        AbstractClass.staticMethod(); // 调用静态方法
+        ConcreteClass.staticMethod(); // 也可以在子类上调用静态方法
+    }
+}
+```
+
+在这个例子中，AbstractClass是一个抽象类，它包含一个静态方法staticMethod和一个抽象方法abstractMethod。子类ConcreteClass继承了AbstractClass，并实现了其中的抽象方法。在Main类中，我们直接调用了AbstractClass中的静态方法staticMethod，以及通过子类ConcreteClass间接调用了这个静态方法。
+
+# 13
+
+13.阅读下列程序代码，
+
+```java
+public class Person {
+    int[][] arr = new int[10][];
+
+    public static void main(String args[]) {
+        arr[1] = new int[10];
+        System.out.println(arr[1][0]);
+    }
+}
+
+```
+
+根据上面代码，下列正确的说法是_____A_____。
+A.编译错误，提示无法从静态上下文中引用非静态变量
+B.编译正确，运行时将产生错误
+C.输出 0 D. 输出空
+
+```java
+public class Person {
+    static int[][] arr = new int[10][];
+
+    public static void main(String[] args) {
+        arr[1] = new int[10];
+        System.out.println(arr[1][0]);
+    }
+}
+
+```
+
+# 14
+
+14.已知类的继承关系如下：
+
+```
+class A{};
+class B extends A{};
+class C extends A{};
+```
+
+则以下语句能不能通过编译的是____D_____。
+A. A a=new B(); B. A a=new C(); C. B b=new B(); D. D d=new A();
+
+> 搞笑呢？？？
+
+# 15
+
+15.容器 JFrame 和 JPanel 默认的布局管理器分别是___B______。
+A. FlowLayout 和 GridLayout B. BorderLayout 和 FlowLayout
+C. GridLayout 和 FlowLayout D. BoxLayout 和 BorderLayout
+
+JFrame和JPanel都是Java Swing库中的组件，具体含义如下：
+
+1. JFrame：JFrame是Java
+   Swing库中的顶级容器类，它表示一个窗口，可以用于创建包含其他Swing组件的GUI应用程序。JFrame是Swing组件的顶层容器，该类继承了AWT的Frame类，支持Swing体系结构的高级GUI属性。
+2. JPanel：JPanel是Java
+   Swing库中的一个面板类，它是用来创建用户界面组件的容器。JPanel可以用来组织和管理其他Swing组件，例如按钮、文本框、标签等等。JPanel通常被用来作为其他组件的容器，以便更好地组织和管理它们。
+
+总之，JFrame和JPanel都是Java Swing库中常用的组件，它们可以用来创建复杂的用户界面，并且可以灵活地组合和嵌套使用，以满足不同应用程序的需求。
+JFrame和JPanel是Java Swing库中的两个重要组件。以下是JFrame和JPanel的基本用法：
+
+创建JFrame窗口：
+
+```java
+import javax.swing.*;
+
+public class MyJFrame extends JFrame {
+    public MyJFrame() {
+        setTitle("My New JFrame"); // 设置标题
+        setSize(1000, 1000); // 设置大小
+        setLocationRelativeTo(null); // 设置位置居中
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // 设置关闭操作
+        setVisible(true); // 设置可见性
+    }
+}
+```
+
+创建JPanel并添加到JFrame中：
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class MyPanel extends JPanel {
+    public MyPanel() {
+        setPreferredSize(new Dimension(400, 400)); // 设置首选大小，也可用setBounds来设置位置和大小
+        setLayout(new BorderLayout()); // 设置布局管理器，也可用其他管理器如BoxLayout、GridLayout等
+    }
+}
+```
+
+然后在JFrame中添加MyPanel：
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            MyJFrame frame = new MyJFrame(); // 创建JFrame窗口
+            MyPanel panel = new MyPanel(); // 创建JPanel面板，并设置其布局为BorderLayout
+            frame.add(panel); // 将面板添加到JFrame中，也可用add(panel, BorderLayout.CENTER)来指定添加到中心位置
+            frame.pack(); // 自动调整窗口大小以适应内容，使窗口大小与内容相匹配，包括边框和标题等元素的大小
+            frame.setVisible(true); // 设置可见性为true，如果已经为true则调用该方法不会有任何效果，此时JFrame已经可见了，可以调用frame.toFront()将窗口提到最前面或者调用frame.repaint()使窗口重新绘制，调用frame.revalidate()来强制重新布局组件布局以更新容器布局等操作。最后需要在主线程中调用frame.setVisible(true)方法来显示窗口。
+        });
+    }
+}
+```
+
+```java
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.Container;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
+public class GridBagLayoutDemo {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("网格布袋布局");
+        frame.setSize(300, 200);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Container contentPane = frame.getContentPane();
+        GridBagLayout gridBagLayout = new GridBagLayout();
+        contentPane.setLayout(gridBagLayout);
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+
+        int[] gridx = {0, 1, 2, 3, 0, 1, 2, 0, 2};
+        int[] gridy = {0, 0, 0, 0, 1, 1, 1, 2, 2, 3};
+        int[] gridwidth = {4, 1, 1, 1, 1, 1, 1, 1, 2, 2};
+        int[] gridheight = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+
+        String name;
+        JButton button;
+
+        for (int i = 0; i < gridx.length; i++) {
+            name = "单元" + (i + 1);
+            button = new JButton(name);
+            gridBagConstraints.gridx = gridx[i];
+            gridBagConstraints.gridy = gridy[i];
+            gridBagConstraints.gridwidth = gridwidth[i];
+            gridBagConstraints.gridheight = gridheight[i];
+            gridBagConstraints.weightx = 100;
+            gridBagConstraints.weighty = 100;
+            gridBagConstraints.fill = GridBagConstraints.BOTH;
+            gridBagLayout.setConstraints(button, gridBagConstraints);
+            contentPane.add(button);
+        }
+
+        frame.setVisible(true);
+    }
+}
+
+```
+
+# 16
+
+16.如果需要从文件中读取数据，可以在程序中创建哪个类的对象______A____。
+A. FileInputStream B. FileOutputStream
+C. DataInputStream D. FileWriter
+
+# 17
+
+17.在 Swing 组件中，按钮 JButton 的单击事件监听器是______A___。
+A. ActionListener B. KeyListener C. MouseListener D. FocusListener
+
+好的，我来解释一下四个选项。
+
+A.
+ActionListener：ActionListener是Swing中按钮（如JButton）的一种监听器。当用户对按钮进行点击、释放或者键盘操作等动作时，会触发一个ActionEvent事件，这个事件可以被ActionListener捕获并处理。
+
+B. KeyListener：KeyListener是Swing中键盘事件的一种监听器。它可以监听键盘上的按键和释放动作，当用户按下或释放键盘上的按键时，会触发KeyEvent事件，这个事件可以被KeyListener捕获并处理。
+
+C.
+MouseListener：MouseListener是Swing中鼠标事件的一种监听器。它可以监听鼠标的点击、移动和释放等动作，当用户对组件进行鼠标点击、拖动或者释放鼠标按钮时，会触发MouseEvent事件，这个事件可以被MouseListener捕获并处理。
+
+D.
+FocusListener：FocusListener是Swing中焦点事件的一种监听器。它可以监听组件获得或失去焦点的情况，当用户点击或按键操作使一个组件获得焦点，或者另一个组件失去焦点时，会触发FocusEvent事件，这个事件可以被FocusListener捕获并处理。
+
+总结：这四个选项都是Swing组件的事件监听器，用于处理不同类型的事件。其中，ActionListener主要处理按钮的点击等动作事件，KeyListener主要处理键盘的按键和释放事件，MouseListener主要处理鼠标的点击、移动和释放事件，FocusListener主要处理组件的焦点事件。
+
+# 18
+
+18.在以下哪种情况下，线程进入就绪状态______B_____。
+A.线程调用了 sleep()方法 B.线程调用 yield()方法
+C.线程调用了 start()方法 D.线程调用了 notify()方法
+
+1. `yield`：
+
+    * 定义：`yield`是Java语言中的一个关键字，它用于告诉JVM（Java虚拟机）当前线程愿意放弃CPU的执行权，使其他线程有机会运行。
+    * 作用：`yield`通常用于多线程编程中，当一个线程执行到某个点时，使用`yield`关键字可以使该线程让步，从而给其他线程提供执行的机会。
+    * 用法：在代码中，使用`yield`关键字即可。例如：`Thread.yield()`。
+    * 原理：当一个线程执行到`yield`时，它会将CPU的执行权让给其他线程，同时将自己放入就绪队列中等待再次被调度。这样做可以避免线程一直占用CPU而导致其他线程无法执行的情况。
+
+2. `notify` 或 `notifyAll`：
+
+    * 定义：`notify`和`notifyAll`是Java对象的一种方法，用于通知其他线程关于某个特定事件。
+    * 作用：当一个线程在等待某个条件成立或等待获取某个锁时，可以使用`notify`或`notifyAll`方法来唤醒其他等待的线程。
+    * 用法：在代码中，可以使用`object.notify()` 或 `object.notifyAll()`
+      来唤醒等待该对象的所有线程。例如，一个线程在等待某个锁时，可以使用该锁对象的`notify`或`notifyAll`方法来唤醒其他等待该锁的线程。
+    * 原理：当一个线程调用`notify`或`notifyAll`
+      方法时，它会发送一个通知给等待该对象的所有线程。收到通知的线程会检查条件是否成立或是否获得了所需的锁，如果成立或获得，则该线程将继续执行。如果没有成立或未获得锁，则该线程将继续等待。使用`notifyAll`
+      方法可以唤醒所有等待该对象的线程，而使用`notify`
+      方法只能唤醒一个等待的线程。需要注意的是，只有拥有该对象锁的线程才能调用`notify`或`notifyAll`方法。
+
+总之，`yield`和`notify`都是Java多线程编程中的重要机制，它们可以帮助实现线程间的协作和通信。通过合理使用它们，可以更好地管理线程的执行顺序和资源分配，从而提高程序的性能和响应速度。
+
+在Java中，`yield()`和`notify()`方法都用于操作线程的执行。然而，它们的使用场景和效果是不同的。
+
+1. `yield()`方法：
+
+`yield()`方法使当前线程放弃CPU的执行时间，让其他线程有机会运行。注意，这并不意味着该线程进入了阻塞状态，只是它让出了CPU的使用权。当其他线程准备就绪时，该线程可能被重新调度。
+
+以下是一个使用`yield()`的简单例子：
+
+```java
+public class Example {
+    public static void main(String[] args) {
+        Thread t1 = new Thread(new Task());
+        Thread t2 = new Thread(new Task());
+
+        t1.start();
+        t2.start();
+
+        // 让t1线程使用yield()，放弃CPU使用权
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        t1.yield();
+    }
+}
+```
+
+在这个例子中，我们创建了两个线程t1和t2，它们都执行相同的任务。在t1线程开始运行后，我们让主线程睡眠1秒钟，然后调用t1线程的`yield()`
+方法，使t1线程放弃CPU使用权。这可能使得t2线程有机会运行。
+
+2. `notify()`方法：
+
+`notify()`方法是用来唤醒在此对象上等待的某个线程。它只能唤醒在调用这个`notify()`
+方法的对象上等待的线程。如果多个线程在等待，则任何一个线程都有可能被唤醒。如果没有线程在等待，那么`notify()`方法没有任何效果。
+
+以下是一个使用`notify()`的简单例子：
+
+```java
+public class Example {
+    private Object lock = new Object();
+
+    public void doSomething() {
+        synchronized (lock) {
+            // 一些操作...
+            lock.notify(); // 唤醒在此对象上等待的某个线程
+        }
+    }
+}
+```
+
+在这个例子中，我们创建了一个对象`lock`作为锁。在`doSomething()`方法中，我们在该对象上同步执行一些操作，然后调用`notify()`
+方法唤醒在此对象上等待的某个线程。如果有线程在等待这个锁，那么它将被唤醒并有机会继续执行。
+
+在Java中，同步锁通常是指`synchronized`关键字，它用于控制多个线程对共享资源的访问。通过在方法或代码块前加上`synchronized`
+关键字，可以确保在同一时刻只有一个线程可以访问该资源。这样，如果有多个线程同时访问同一个资源，它们会被序列化，确保资源的正确使用。
+
+在代码中，同步锁可以是任何对象，只要它在该对象上同步。通常，对于需要同步的代码块或方法，会使用该对象作为锁对象。当一个线程获得该锁时，其他尝试获得该锁的线程将被阻塞，直到第一个线程释放该锁。
+
+例如：
+
+```java
+public class MyClass {
+    private Object lock = new Object();
+
+    public void myMethod() {
+        synchronized (lock) {
+            // 在此处执行需要同步的代码
+        }
+    }
+}
+```
+
+在这个例子中，`lock`对象用作同步锁。当一个线程进入同步块时，它需要获得`lock`
+对象的锁。如果该锁已经被另一个线程持有，则其他线程将被阻塞，直到第一个线程释放该锁。这样，可以确保在多线程环境中，myMethod()
+方法的内部代码块在同一时刻只被一个线程执行。
