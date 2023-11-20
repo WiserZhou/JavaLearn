@@ -811,3 +811,14 @@ public class MyClass {
 在这个例子中，`lock`对象用作同步锁。当一个线程进入同步块时，它需要获得`lock`
 对象的锁。如果该锁已经被另一个线程持有，则其他线程将被阻塞，直到第一个线程释放该锁。这样，可以确保在多线程环境中，myMethod()
 方法的内部代码块在同一时刻只被一个线程执行。
+
+# 19
+
+19.让某一个线程等待另一个线程执行结束后再开始执行该线程，可以使用线程
+类的方法_____D_____。
+A. serializable B. synchronized C. interrupt D. join
+
+# 20
+
+20.下面哪个是 Java 提供的面向网络层编程的类____A______。
+A. InetAddress B.Socket C. URL D. ServerSocket

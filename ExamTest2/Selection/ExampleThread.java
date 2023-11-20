@@ -1,10 +1,10 @@
 package ExamTest2.Selection;
 
 public class ExampleThread {
-  private final Object lock = new Object();
+  private final Object lock = new Object(); // 私有的Object类型的变量lock，用作同步锁。
 
   public void doSomething() {
-    synchronized (lock) {
+    synchronized (lock) { // doSomething方法使用synchronized关键字将代码块标记为同步块，使用lock对象作为同步锁。
       // 一些操作...
       System.out.println("当前线程执行到唤醒其他线程的代码...");
       lock.notify(); // 唤醒在此对象上等待的一个线程。
