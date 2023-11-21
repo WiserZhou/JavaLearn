@@ -991,46 +991,46 @@ public class TestThread {
 package ExamTest1.Selection;
 
 class ThreadDemo extends Thread {
-   private Thread t;
-   private final String threadName;
+    private Thread t;
+    private final String threadName;
 
-   ThreadDemo(String name) {
-      threadName = name;
-      System.out.println("Creating " + threadName);
-   }
+    ThreadDemo(String name) {
+        threadName = name;
+        System.out.println("Creating " + threadName);
+    }
 
-   public void run() {
-      System.out.println("Running " + threadName);
-      try {
-         for (int i = 4; i > 0; i--) {
-            System.out.println("Thread: " + threadName + ", " + i);
-            // 让线程睡眠一会
-            Thread.sleep(50);
-         }
-      } catch (InterruptedException e) {
-         System.out.println("Thread " + threadName + " interrupted.");
-      }
-      System.out.println("Thread " + threadName + " exiting.");
-   }
+    public void run() {
+        System.out.println("Running " + threadName);
+        try {
+            for (int i = 4; i > 0; i--) {
+                System.out.println("Thread: " + threadName + ", " + i);
+                // 让线程睡眠一会
+                Thread.sleep(50);
+            }
+        } catch (InterruptedException e) {
+            System.out.println("Thread " + threadName + " interrupted.");
+        }
+        System.out.println("Thread " + threadName + " exiting.");
+    }
 
-   public void start() {
-      System.out.println("Starting " + threadName);
-      if (t == null) {
-         t = new Thread(this, threadName);
-         t.start();
-      }
-   }
+    public void start() {
+        System.out.println("Starting " + threadName);
+        if (t == null) {
+            t = new Thread(this, threadName);
+            t.start();
+        }
+    }
 }
 
 public class TestThread1 {
 
-   public static void main(String[] args) {
-      ThreadDemo T1 = new ThreadDemo("Thread-1");
-      T1.start();
+    public static void main(String[] args) {
+        ThreadDemo T1 = new ThreadDemo("Thread-1");
+        T1.start();
 
-      ThreadDemo T2 = new ThreadDemo("Thread-2");
-      T2.start();
-   }
+        ThreadDemo T2 = new ThreadDemo("Thread-2");
+        T2.start();
+    }
 }
 
 ```
@@ -1126,8 +1126,8 @@ public class Main {
 
 通过使用 synchronized 关键字，可以保证线程安全地对共享资源进行操作，确保数据的正确性和一致性。
 
-
 # 20
+
 下面哪个是 Java 提供的面向应用层编程的类_____D_____。
 A. InetAddress B.Socket C. URL D. ServerSocket
 
@@ -1146,8 +1146,8 @@ https://blog.csdn.net/dyx1993/article/details/113985648
 ![img_11.png](img_11.png)
 ![img_12.png](img_12.png)
 
-
 ### InetAddress
+
 使用`InetAddress`类，我们可以获取和操作与网络相关的主机名和IP地址。`InetAddress`类提供了一组静态方法和实例方法来获取主机名和IP地址、进行地址解析和反向解析等操作。
 
 下面是一些常用的示例：
@@ -1155,43 +1155,45 @@ https://blog.csdn.net/dyx1993/article/details/113985648
 1. 获取本地主机的IP地址和主机名：
 
 ```java
-InetAddress localHost = InetAddress.getLocalHost();
-System.out.println("Local Host IP Address: " + localHost.getHostAddress());
-System.out.println("Local Host Name: " + localHost.getHostName());
+InetAddress localHost=InetAddress.getLocalHost();
+        System.out.println("Local Host IP Address: "+localHost.getHostAddress());
+        System.out.println("Local Host Name: "+localHost.getHostName());
 ```
 
 2. 根据主机名获取IP地址：
 
 ```java
-String hostName = "www.example.com";
-InetAddress[] addresses = InetAddress.getAllByName(hostName);
-for (InetAddress address : addresses) {
-    System.out.println("IP Address: " + address.getHostAddress());
-}
+String hostName="www.example.com";
+        InetAddress[]addresses=InetAddress.getAllByName(hostName);
+        for(InetAddress address:addresses){
+        System.out.println("IP Address: "+address.getHostAddress());
+        }
 ```
+
 根据主机名获取IP地址返回的是一个数组，是因为一个主机名可能对应多个IP地址。这种情况通常出现在负载均衡、域名解析等情况下。举个例子，当一个域名对应多个服务器时，DNS解析就会返回一个IP地址数组，以提供负载均衡和容错能力。因此，根据主机名获取IP地址返回数组能够更全面地覆盖所有可能的IP地址，确保网络通信的可靠性和稳定性。
+
 3. 根据IP地址获取主机名：
 
 ```java
-String ipAddress = "192.168.0.1";
-InetAddress address = InetAddress.getByName(ipAddress);
-System.out.println("Host Name: " + address.getHostName());
+String ipAddress="192.168.0.1";
+        InetAddress address=InetAddress.getByName(ipAddress);
+        System.out.println("Host Name: "+address.getHostName());
 ```
 
 4. 判断是否可达：
 
 ```java
-InetAddress address = InetAddress.getByName("www.example.com");
-boolean isReachable = address.isReachable(5000); // 5秒内是否可达
-System.out.println("Is Reachable: " + isReachable);
+InetAddress address=InetAddress.getByName("www.example.com");
+        boolean isReachable=address.isReachable(5000); // 5秒内是否可达
+        System.out.println("Is Reachable: "+isReachable);
 ```
 
 通过`InetAddress`类，我们可以方便地获取主机名和IP地址，并且可以进行地址解析和网络可达性检查等操作。这使得我们可以在网络编程中更好地处理和使用主机和IP地址相关的信息。
 
-
 ![img_14.png](img_14.png)
 
 ### URL
+
 ![img_15.png](img_15.png)
 ![img_16.png](img_16.png)
 URL与Stream的结合的一个例子，正好可以用来复习
@@ -1199,9 +1201,8 @@ URL与Stream的结合的一个例子，正好可以用来复习
 再加上一个线程，正好复习
 ![img_18.png](img_18.png)
 
-
-
 ### socket
+
 ![img_19.png](img_19.png)
 ![img_20.png](img_20.png)
 
