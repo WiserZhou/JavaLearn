@@ -28,5 +28,9 @@ public class OuterClass {
 
     // 调用外部类方法来间接调用内部类的方法
     outer.outerMethod();
+
+    OuterClass.InnerClass innerClass = new OuterClass().new InnerClass();
+
+    InnerClass innerClass1 = new OuterClass().new InnerClass();
   }
 }

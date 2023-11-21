@@ -237,7 +237,7 @@ C. 调用对象方法时 D. 使用对象的变量时
 # 8
 
 8.在 Outer 类中定义一个非静态成员类 Inner，需要在 main()方法中创建 Inner 类
-实例对象，以下四种方式哪一种是正确的______A_____。
+实例对象，以下四种方式哪一种是正确的___________。
 
 A. Inner in = new Inner();
 
@@ -247,11 +247,12 @@ C. Outer.Inner in = new Outer.Inner();
 
 D. Outer.Inner in = new Outer().new.Inner();
 
+**此题没有正确答案**
+
 写法可以是：
-Inner in = new Inner();
+Inner in = new Outer().new Inner();
 或者
 Outer.Inner in = new Outer.new Inner();
-，也可以部分拼接
 
 四种子类：
 https://www.joshua317.com/article/212
