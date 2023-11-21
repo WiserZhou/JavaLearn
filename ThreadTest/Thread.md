@@ -499,23 +499,26 @@ public class ThreadTest7 implements Runnable {
 ### 对代码块进行锁
 
 ```java
-public void add()throws InterruptedException{
-        String name=Thread.currentThread().getName();
-synchronized (this){ // 语句块同步，将当前对象作为锁
-        for(int i=0;i< 5;i++){
-        list.add(name);
-        Thread.sleep(200);
-        }
-        }
+public class Main(){
+   public void add()throws InterruptedException{
+      String name=Thread.currentThread().getName();
+      synchronized (this){ // 语句块同步，将当前对象作为锁
+         for(int i=0;i< 5;i++){
+            list.add(name);
+            Thread.sleep(200);
+         }
+      }
 
-        String name2=Thread.currentThread().getName();
-synchronized (ThreadSync.class){ // 语句块同步，指定的锁为整个类
-        for(int i=0;i< 5;i++){
-        list.add(name2);
-        Thread.sleep(200);
-        }
-        }
-        }
+      String name2=Thread.currentThread().getName();
+      synchronized (ThreadSync.class){ // 语句块同步，指定的锁为整个类
+         for(int i=0;i< 5;i++){
+            list.add(name2);
+            Thread.sleep(200);
+         }
+      }
+   }
+}
+
 
 ```
 
