@@ -125,9 +125,6 @@ Server，其中，Client 为客户端，Server 为服务器端。客户端通过
 组整数，服务器端通过 ServerSocket 接收客户端发送的一组整数后，计算这组
 整数的和，然后将其返回给客户端。(10 分)
 
-
-
-
 ```java
 
 import java.io.*;
@@ -137,7 +134,7 @@ import java.net.Socket;
 public class Server {
   public static void main(String[] args) throws IOException {
 
-    ServerSocket serverSocket = new ServerSocket(8080);
+    ServerSocket serverSocket = new ServerSocket(5432);
     System.out.println("waiting ...");
     Socket socket = serverSocket.accept();
     System.out.println("connected!");
@@ -174,7 +171,7 @@ import java.net.Socket;
 
 public class Client {
   public static void main(String[] args) throws IOException {
-    Socket socket = new Socket("localhost", 8080);
+    Socket socket = new Socket("localhost", 5432);
 
     OutputStream outputStream = socket.getOutputStream();
     DataOutputStream dataOutputStream = new DataOutputStream(outputStream);

@@ -14,6 +14,8 @@
 
 ### ThreadTest 是线程的代码
 
+### Write是编程题，代码要从零写，不要看提示
+
 #### 附上课件
 
 链接：https://pan.baidu.com/s/1WTEqMYUIxizIhnAKp1VB9A

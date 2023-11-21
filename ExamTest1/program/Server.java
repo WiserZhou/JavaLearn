@@ -9,6 +9,7 @@ public class Server {
 
     ServerSocket serverSocket = new ServerSocket(8080);
     System.out.println("waiting ...");
+
     Socket socket = serverSocket.accept();
     System.out.println("connected!");
 

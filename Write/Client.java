@@ -15,8 +15,7 @@ public class Client {
       DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
       DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
 
-      int i = 0;
-      for (i = 0; i < 10; i++) {
+      for (int i = 0; i < 10; i++) {
         dataOutputStream.writeInt(i);
         System.out.println("发送整数：" + i);
       }
