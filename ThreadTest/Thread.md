@@ -317,123 +317,127 @@ public class Main {
     public static void main(String[] args) {
         MyThread thread = new MyThread();
         thread.start();
-        
+
         try {
             Thread.sleep(5000); // 让主线程休眠5秒钟
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        
+
         thread.interrupt(); // 中断线程的执行
-        
+
         System.out.println("Main thread finished");
     }
 }
 ```
 
-在上面的示例中，我们创建了一个继承自Thread的MyThread类，其中的run()方法中使用了isInterrupted()方法来判断线程是否被中断。在主线程中，我们创建了一个MyThread对象并启动它，然后让主线程休眠5秒钟后调用thread.interrupt()方法中断线程的执行。
+在上面的示例中，我们创建了一个继承自Thread的MyThread类，其中的run()方法中使用了isInterrupted()
+方法来判断线程是否被中断。在主线程中，我们创建了一个MyThread对象并启动它，然后让主线程休眠5秒钟后调用thread.interrupt()
+方法中断线程的执行。
 
-当通过interrupt()方法中断线程时，线程会抛出InterruptedException，并进入catch块中的处理逻辑，打印出"Thread interrupted"。接着，线程会继续执行剩余的代码，并打印出"Thread finished"表示线程的执行结束。
+当通过interrupt()方法中断线程时，线程会抛出InterruptedException，并进入catch块中的处理逻辑，打印出"Thread interrupted"
+。接着，线程会继续执行剩余的代码，并打印出"Thread finished"表示线程的执行结束。
 
-当主线程执行完毕后，会打印出"Main thread finished"。通过在MyThread的run()方法中使用isInterrupted()方法判断线程是否被中断，我们可以灵活地根据需要执行相应的操作。
-
+当主线程执行完毕后，会打印出"Main thread finished"。通过在MyThread的run()方法中使用isInterrupted()
+方法判断线程是否被中断，我们可以灵活地根据需要执行相应的操作。
 
 # 线程之间的通信：pip
+
 ```java
 package ThreadTest;
 
 import java.io.*;
 
 class MyWriter extends Thread {
-  PipedOutputStream pos; // 管道输出数据流
-  private final String[] messages = {
-    "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-  }; // 写入数据
+    PipedOutputStream pos; // 管道输出数据流
+    private final String[] messages = {
+            "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+    }; // 写入数据
 
-  public MyWriter(PipedOutputStream pos) {
-    this.pos = pos;
-  }
-
-  public void run() {
-    try {
-      // 数据输出数据流
-      DataOutputStream dos = new DataOutputStream(pos);
-      // 数据长度
-      int size = 7;
-      dos.writeInt(size); // 写入数据长度
-
-      // 写入数据
-      for (String message : messages) {
-        dos.writeUTF(message);
-        System.out.println("Write: " + message);
-        try {
-          sleep(300);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
-      }
-
-      dos.close();
-    } catch (IOException e) {
-      e.printStackTrace();
+    public MyWriter(PipedOutputStream pos) {
+        this.pos = pos;
     }
-  }
+
+    public void run() {
+        try {
+            // 数据输出数据流
+            DataOutputStream dos = new DataOutputStream(pos);
+            // 数据长度
+            int size = 7;
+            dos.writeInt(size); // 写入数据长度
+
+            // 写入数据
+            for (String message : messages) {
+                dos.writeUTF(message);
+                System.out.println("Write: " + message);
+                try {
+                    sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            dos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 class MyReader extends Thread {
-  PipedInputStream pis; // 管道输入数据流
+    PipedInputStream pis; // 管道输入数据流
 
-  public MyReader(PipedInputStream pis) {
-    this.pis = pis;
-  }
-
-  public void run() {
-    try {
-      // 数据输入数据流
-      DataInputStream dis = new DataInputStream(pis);
-      int size = dis.readInt(); // 读取数据长度
-      // 接收数据
-      String[] messages = new String[size]; // 设置数据长度
-
-      // 读取数据
-      for (int i = 0; i < messages.length; i++) {
-        messages[i] = dis.readUTF();
-        System.out.println("Read: " + messages[i]);
-        try {
-          sleep(400);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
-      }
-
-      dis.close();
-    } catch (IOException e) {
-      e.printStackTrace();
+    public MyReader(PipedInputStream pis) {
+        this.pis = pis;
     }
-  }
+
+    public void run() {
+        try {
+            // 数据输入数据流
+            DataInputStream dis = new DataInputStream(pis);
+            int size = dis.readInt(); // 读取数据长度
+            // 接收数据
+            String[] messages = new String[size]; // 设置数据长度
+
+            // 读取数据
+            for (int i = 0; i < messages.length; i++) {
+                messages[i] = dis.readUTF();
+                System.out.println("Read: " + messages[i]);
+                try {
+                    sleep(400);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            dis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 public class ThreadTest6 {
-  public static void main(String[] args) {
-    ThreadTest6 thisPipe = new ThreadTest6();
-    thisPipe.process();
-  }
-
-  public void process() {
-    PipedInputStream inStream; // 管道输入流
-    PipedOutputStream outStream; // 管道输出流
-
-    try {
-      // 建立输入流与输出流之间的连接
-      outStream = new PipedOutputStream();
-      inStream = new PipedInputStream(outStream);
-
-      new MyWriter(outStream).start(); // 启动写线程
-      new MyReader(inStream).start(); // 启动读线程
-    } catch (IOException e) {
-      e.printStackTrace();
+    public static void main(String[] args) {
+        ThreadTest6 thisPipe = new ThreadTest6();
+        thisPipe.process();
     }
-  }
+
+    public void process() {
+        PipedInputStream inStream; // 管道输入流
+        PipedOutputStream outStream; // 管道输出流
+
+        try {
+            // 建立输入流与输出流之间的连接
+            outStream = new PipedOutputStream();
+            inStream = new PipedInputStream(outStream);
+
+            new MyWriter(outStream).start(); // 启动写线程
+            new MyReader(inStream).start(); // 启动读线程
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 ```
@@ -441,6 +445,7 @@ public class ThreadTest6 {
 # 锁
 
 ### 方法锁
+
 ```java
 package ThreadTest;
 
@@ -448,164 +453,197 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ThreadTest7 implements Runnable {
-  static List<String> list = new ArrayList<String>();
+    static List<String> list = new ArrayList<String>();
 
-  // 实例方法同步
-  public static synchronized void add() throws InterruptedException {
-    String name = Thread.currentThread().getName();
-    for (int i = 0; i < 5; i++) {
-      list.add(name);
-      Thread.sleep(200);
-    }
-  }
-
-  // 线程体
-  public void run() {
-    try {
-      add();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-  }
-
-  public static void main(String[] args) throws InterruptedException {
-    ThreadTest7 t1 = new ThreadTest7(); // 创建实例t1
-    ThreadTest7 t2 = new ThreadTest7(); // 创建实例t2
-    Thread ta = new Thread(t1, "A"); // 创建线程对象
-    Thread th = new Thread(t2, "B"); // 创建线程对象
-    Thread tc = new Thread(t2, "C"); // 创建线程对象
-
-    // 启动线程
-    ta.start();
-    th.start();
-    tc.start();
-
-    // 在主线程之前执行
-    ta.join();
-    th.join();
-    tc.join();
-
-    System.out.println("ThreadSynch.list: " + list);
-  }
-}
-
-```
-### 对代码块进行锁
-
-```java
-public void add() throws InterruptedException {
-    String name = Thread.currentThread().getName();
-    synchronized (this) { // 语句块同步，将当前对象作为锁
+    // 实例方法同步
+    public static synchronized void add() throws InterruptedException {
+        String name = Thread.currentThread().getName();
         for (int i = 0; i < 5; i++) {
             list.add(name);
             Thread.sleep(200);
         }
     }
 
-    String name2 = Thread.currentThread().getName();
-    synchronized (ThreadSync.class) { // 语句块同步，指定的锁为整个类
-        for (int i = 0; i < 5; i++) {
-            list.add(name2);
-            Thread.sleep(200);
+    // 线程体
+    public void run() {
+        try {
+            add();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        ThreadTest7 t1 = new ThreadTest7(); // 创建实例t1
+        ThreadTest7 t2 = new ThreadTest7(); // 创建实例t2
+        Thread ta = new Thread(t1, "A"); // 创建线程对象
+        Thread th = new Thread(t2, "B"); // 创建线程对象
+        Thread tc = new Thread(t2, "C"); // 创建线程对象
+
+        // 启动线程
+        ta.start();
+        th.start();
+        tc.start();
+
+        // 在主线程之前执行
+        ta.join();
+        th.join();
+        tc.join();
+
+        System.out.println("ThreadSynch.list: " + list);
     }
 }
 
 ```
 
+### 对代码块进行锁
+
+```java
+public void add()throws InterruptedException{
+        String name=Thread.currentThread().getName();
+synchronized (this){ // 语句块同步，将当前对象作为锁
+        for(int i=0;i< 5;i++){
+        list.add(name);
+        Thread.sleep(200);
+        }
+        }
+
+        String name2=Thread.currentThread().getName();
+synchronized (ThreadSync.class){ // 语句块同步，指定的锁为整个类
+        for(int i=0;i< 5;i++){
+        list.add(name2);
+        Thread.sleep(200);
+        }
+        }
+        }
+
+```
 
 # 单缓冲区的线程唤醒
+
 ```java
 package ThreadTest;
 
 class CubbyHole {
-  private int goods; // 缓冲区数据
-  private boolean empty; // 缓冲区是否为空
+    private int goods; // 缓冲区数据
+    private boolean empty; // 缓冲区是否为空
 
-  public CubbyHole() {
-    empty = true; // 初始缓冲区为空
-  }
-
-  public synchronized int get() {
-    // 当缓冲区为空
-    while (empty) {
-      try {
-        wait(); // 让调用get方法的线程进入等待集合中
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
+    public CubbyHole() {
+        empty = true; // 初始缓冲区为空
     }
-    System.out.println("消费者拿走了物品" + goods);
-    empty = true; // 设置缓冲区为空
-    notify(); // 唤醒等待集合中的线程
-    return goods;
-  }
 
-  public synchronized void put(int value) {
-    // 如果缓冲区不为空
-    while (!empty) {
-      try {
-        wait(); // 让调用put方法的线程进入等待集合中
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
+    public synchronized int get() {
+        // 当缓冲区为空
+        while (empty) {
+            try {
+                wait(); // 让调用get方法的线程进入等待集合中
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("消费者拿走了物品" + goods);
+        empty = true; // 设置缓冲区为空
+        notify(); // 唤醒等待集合中的线程
+        return goods;
     }
-    goods = value; // 向缓冲区放入数据value
-    System.out.println("生产者生产了物品" + goods);
-    empty = false; // 设置缓冲区为非空
-    notify(); // 唤醒等待集合中的线程
-  }
+
+    public synchronized void put(int value) {
+        // 如果缓冲区不为空
+        while (!empty) {
+            try {
+                wait(); // 让调用put方法的线程进入等待集合中
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        goods = value; // 向缓冲区放入数据value
+        System.out.println("生产者生产了物品" + goods);
+        empty = false; // 设置缓冲区为非空
+        notify(); // 唤醒等待集合中的线程
+    }
 }
 
 // 生产者
 class Producer1 extends Thread {
-  private final CubbyHole cubbyHole;
+    private final CubbyHole cubbyHole;
 
-  public Producer1(CubbyHole c) {
-    cubbyHole = c;
-  }
-
-  public void run() {
-    // 向缓冲区放入1-100之间的50个随机数
-    for (int i = 0; i < 50; i++) {
-      cubbyHole.put(i);
+    public Producer1(CubbyHole c) {
+        cubbyHole = c;
     }
-  }
+
+    public void run() {
+        // 向缓冲区放入1-100之间的50个随机数
+        for (int i = 0; i < 50; i++) {
+            cubbyHole.put(i);
+        }
+    }
 }
 
 // 消费者
 class Consumer extends Thread {
-  private final CubbyHole cubbyHole;
+    private final CubbyHole cubbyHole;
 
-  public Consumer(CubbyHole c) {
-    cubbyHole = c;
-  }
-
-  public void run() {
-    for (int i = 0; i < 50; i++) {
-      cubbyHole.get();
+    public Consumer(CubbyHole c) {
+        cubbyHole = c;
     }
-  }
+
+    public void run() {
+        for (int i = 0; i < 50; i++) {
+            cubbyHole.get();
+        }
+    }
 }
 
 // Main类
 public class ThreadTest8 {
-  public static void main(String[] args) {
-    // 创建单缓冲区
-    CubbyHole c = new CubbyHole();
+    public static void main(String[] args) {
+        // 创建单缓冲区
+        CubbyHole c = new CubbyHole();
 
-    // 创建生产者
-    Producer1 producer = new Producer1(c);
-    producer.start();
+        // 创建生产者
+        Producer1 producer = new Producer1(c);
+        producer.start();
 
-    // 创建消费者
-    Consumer consumer = new Consumer(c);
-    consumer.start();
-  }
+        // 创建消费者
+        Consumer consumer = new Consumer(c);
+        consumer.start();
+    }
 }
 
 ```
 
+### wait()和yield()的区别
+
+`wait` 和 `yield` 都是与线程调度相关的操作，但它们有不同的用途和行为：
+
+1. **`wait`：**
+    - `wait` 是 `Object` 类中的方法，用于在多线程环境中实现线程间的协调。
+    - 当一个线程执行 `wait()` 方法时，它会释放对象的锁，并让出 CPU，进入等待状态，直到被其他线程通过 `notify()`
+      或 `notifyAll()` 唤醒。
+    - `wait` 必须在同步块或方法中调用，即线程必须持有对象的锁。
+    - 通常与 `notify()` 或 `notifyAll()` 一起使用，用于线程间的通信和协调。
+
+   ```java
+   synchronized (lock) {
+       // some code
+       lock.wait(); // releases the lock and waits
+       // code after being notified
+   }
+   ```
+
+2. **`yield`：**
+    - `yield` 是 `Thread` 类中的一个静态方法，用于告诉调度器当前线程愿意让出 CPU 执行时间，让其他线程有机会执行。
+    - 调用 `yield` 不会释放锁，只是让出 CPU 使用权，但线程仍然保持就绪状态，可以在下一个时间片重新被调度。
+    - `yield` 主要用于调试和测试，不能保证在所有情况下产生可靠的结果，因为调度器可以选择忽略 `yield` 的请求。
+
+   ```java
+   Thread.yield(); // suggests that the thread is willing to yield its current use of a processor
+   ```
+
+总结：
+
+- `wait` 用于线程间的协调和通信，涉及到对象锁和 `notify`。
+- `yield` 用于线程的主动让步，告诉调度器当前线程可以让其他线程执行，但不涉及锁和通信。
 
 
 
