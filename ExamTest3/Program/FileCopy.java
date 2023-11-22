@@ -13,11 +13,12 @@ public class FileCopy {
     FileOutputStream fileOutputStream = new FileOutputStream(destinationPath);
 
     byte[] buffer = new byte[1024];
-
     int bytesRead;
+
     while ((bytesRead = fileInputStream.read(buffer)) != -1) {
       fileOutputStream.write(buffer, 0, bytesRead);
     }
+
     fileInputStream.close();
     fileOutputStream.close();
   }
