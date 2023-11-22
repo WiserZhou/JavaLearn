@@ -11,7 +11,7 @@ public class Main{
         double a = 10.2;
         float b = 2.4f;
         int d = 10;
-        InetAddress.getLocalHost()
+//        InetAddress.getLocalHost()
 
         int x[];
 //        int y[3];
