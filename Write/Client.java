@@ -2,11 +2,13 @@ package Write;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class Client {
   public static void main(String[] args) {
-    String serverIP = "202.102.144.106";
+    String serverIP = "localhost";
     int serverPort = 5432;
     try {
       Socket socket = new Socket(serverIP, serverPort);
@@ -27,8 +29,8 @@ public class Client {
       dataOutputStream.close();
       socket.close();
 
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (IOException e) {
+        throw new RuntimeException(e);
     }
   }
 }

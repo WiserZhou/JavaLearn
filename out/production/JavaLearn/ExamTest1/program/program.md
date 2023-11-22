@@ -48,7 +48,7 @@ class Circle extends Geometry {
 
   @Override
   public double getArea() {
-    return radius * radius;
+    return Math.PI * radius * radius;
   }
 
   Circle(double radius) {
