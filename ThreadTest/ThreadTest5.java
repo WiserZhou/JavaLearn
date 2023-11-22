@@ -27,6 +27,6 @@ public class ThreadTest5 {
 
     thread.interrupt(); // 中断线程的执行
 
-    System.out.println("Main thread finished");
+    System.out.println("Main11 thread finished");
   }
 }
